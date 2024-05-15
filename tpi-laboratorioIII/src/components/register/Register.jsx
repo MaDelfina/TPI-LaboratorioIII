@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
-import { CLIENTS } from "../data/Data";
+import { USERS } from "../data/Data";
+import { useRef } from 'react';
+import './Register.css'
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -11,6 +13,9 @@ function Register() {
     const [completarCampos, setcompletarCampos] = useState(false);
     const [constraseñaDistinta, setConstraseñaDistinta] = useState(false);
     const [registroExitoso, setRegistroExitoso] = useState(false);
+    const emailRef = useRef(null);
+    const password1Ref = useRef(null);
+    const password2Ref = useRef(null);
 
     const handlerEmail = (event) => {
         setEmail(event.target.value)
@@ -25,28 +30,39 @@ function Register() {
     }
 
     const buttonRegister = (event) => {
-        event.preventDefault(); //evitar que se recargue
+        event.preventDefault();
 
         if (!email || !password1 || !password2) {
-            setcompletarCampos(true); // Mostrar la alerta si algún campo está vacío
+            setcompletarCampos(true); //Mostrar la alerta si algún campo está vacío
+            if (!email){
+                emailRef.current.focus()
+            } else if (!password1){
+                password1Ref.current.focus();
+            }
+            else if (!password2){
+                password2Ref.current.focus();
+            }
             return;
         }
 
         if (password1 != password2) {
-            setConstraseñaDistinta(true)
+            setConstraseñaDistinta(true);
+            return;
+        }
+
+        const newClient = {
+            id: USERS.length + 1,
+            username: email,
+            password: password1,
+            shopping_carg: [],
+            rol: "client"
         }
 
         setRegistroExitoso(true);
 
-        const newClient = {
-            id: CLIENTS.length + 1, //Asigna un nuevo ID
-            username: email,
-            password: password1,
-            shopping_cart: []
-        };
-
-        CLIENTS.push(newClient);
+        USERS.push(newClient);
         console.log('Nuevo cliente agregado:', newClient);
+        console.log("clientes: ", USERS);
     }
 
     return (
@@ -54,17 +70,17 @@ function Register() {
             <Form onSubmit={buttonRegister} className='register'>
                 <Form.Group className="mb-3">
                     <Form.Label>Usuario</Form.Label>
-                    <Form.Control type="user" placeholder="Nombre de usuario" value={email} onChange={handlerEmail} />
+                    <Form.Control type="user" placeholder="Nombre de usuario" value={email} ref={emailRef} onChange={handlerEmail} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Contraseña</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password1} onChange={handlerPassword1} />
+                    <Form.Control type="password" placeholder="Password" value={password1} ref={password1Ref} onChange={handlerPassword1} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Confirmar contraseña</Form.Label>
-                    <Form.Control type="password" placeholder="confirmar contraseña" value={password2} onChange={handlerPassword2} />
+                    <Form.Control type="password" placeholder="confirmar contraseña" value={password2} ref={password2Ref} onChange={handlerPassword2} />
                 </Form.Group>
 
                 <Button variant="outline-secondary" type="submit">
