@@ -9,10 +9,13 @@
 
 .Nav-Bar{
     background-color: #bee7cc;
+    margin-bottom: 10px; /* es para que no este pegado al componente de abajo */
+    
 
     
 }
 .Nav-Seccion:hover{
     background-color:#99d2ac;
-    transition: background-color 0.9s ease, color 1.0s ease;
+    transition: background-color 0.9s ease, color 1.0s ease; 
+    /*para que no cambie de golpe el color, no se si funciona bien.*/
 }
