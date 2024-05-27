@@ -1,0 +1,15 @@
+.footer {
+    width: 100%;
+    background-color: #8a8a8aad;
+    color: white;
+    padding: 20px 0;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+
+.row {
+    margin: 10px;
+}

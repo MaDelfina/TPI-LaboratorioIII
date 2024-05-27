@@ -1,36 +1,54 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './Login.css'
-import { Form, Button} from 'react-bootstrap'
+import { Form, Button, Alert} from 'react-bootstrap'
 import { USERS } from '../data/Data'
 
 const Login = () => {
   const [enteredUser, setEnteredUser] = useState('')
   const [enteredPass, setEnteredPass] = useState('')
+  const usernameRef = useRef(null)
+  const passwordRef = useRef(null)
+  const [errors, setErrors] = useState({
+    username: false,
+    password: false,
+    exists: false,
+  })
 
   const usernameHandler = (event) => {
+    setErrors({...errors, username: false})
     setEnteredUser(event.target.value)
   }
 
   const passwordHandler = (event) => {
+    setErrors({...errors, password: false})
     setEnteredPass(event.target.value)
-  }
-
-  const searchUser = (enteredUser, enteredPass) => {
-    for(let user of USERS){
-      if(user.username === enteredUser && user.password === enteredPass){
-        return true
-      }
-    }
-    return false
   }
 
   const loginHandler = (event) => {
     event.preventDefault()
-    if(!searchUser(enteredUser, enteredPass)) {
-      alert("Contraseña incorrecta o Usuario NO encontrado")
-    } else {
-      alert('Usuario ingresado con éxito')
+    setErrors({...errors, exists: false})
+
+    if(enteredUser.length === 0){
+      usernameRef.current.focus()
+      setErrors({...errors, username: true})
+      return
     }
+
+    if(enteredPass.length === 0){
+      passwordRef.current.focus()
+      setErrors({...errors, password: true})
+      return
+    }
+
+    if (USERS.some(user => user.username === enteredUser && user.password === enteredPass)) {
+      console.log("usuario encontrado")
+    } else {
+      setErrors({ ...errors, exists: true })
+      setEnteredUser('')
+      setEnteredPass('')
+      return
+    }
+    
     setEnteredUser('')
     setEnteredPass('')
   }
@@ -38,15 +56,34 @@ const Login = () => {
   return (
     <div className='login'>
       <Form className='form-login' onSubmit={loginHandler}>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
-          <Form.Control value={enteredUser} type='text' placeholder='Nombre de usuario' onChange={usernameHandler}></Form.Control>
+          <Form.Control 
+          ref={usernameRef} 
+          value={enteredUser} 
+          type='text' 
+          placeholder='Nombre de usuario' 
+          onChange={usernameHandler}
+          className={errors.username && "border border-danger"}>
+
+          </Form.Control>
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
-          <Form.Control value={enteredPass} type='text' placeholder='Contraseña' onChange={passwordHandler}></Form.Control>
+          <Form.Control 
+          ref={passwordRef} 
+          value={enteredPass} 
+          type='text' 
+          placeholder='Contraseña' 
+          onChange={passwordHandler}
+          className={errors.password && "border border-danger"}>
+
+          </Form.Control>
         </Form.Group>
-        <Button variant='outline-primary' type='submit'>Login</Button>
+        <Button variant='primary' type='submit'>Login</Button>
+        <Button variant='outline-primary'>Register</Button>
+        {errors.exists && <Alert variant='danger' className='mt-3'>Credenciales inválidas</Alert>}
+        {(errors.username || errors.password) && <Alert variant='warning' className='mt-3'>Debes completar todos los campos</Alert>}
       </Form>
     </div>
   )
