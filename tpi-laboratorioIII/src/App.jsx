@@ -5,6 +5,7 @@ import Header from './components/header/Header'
 import Login from './components/login/Login'
 import MainLayout from './components/mainLayout/MainLayout'
 import Register from './components/register/Register'
+import Footer from "./components/footer/Footer"
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
