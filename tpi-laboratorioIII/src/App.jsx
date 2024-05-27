@@ -37,7 +37,7 @@ function App() {
       path:'/addProduct',
       element:(
         <MainLayout>
-          {/* <FormProduct/> todabia no existe */}
+          <FormProduct/>
         </MainLayout>
       ),
     },
