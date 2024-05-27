@@ -1,7 +1,16 @@
 .login {
-    max-width: 200px;
+    margin-top: 20px;
+    max-width: 600px;
+    border: 1px solid rgb(15, 15, 80);
+    border-radius: 20px;
+    padding: 20px;
 }
-
+.form-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 button {
     margin-top: 10px;
 }
