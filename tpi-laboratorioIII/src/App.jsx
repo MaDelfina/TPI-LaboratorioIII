@@ -9,7 +9,8 @@ import Register from './components/register/Register'
 function App() {
   return (
     <>
-    
+    <FormProduct/>
+    {/* <ListProduct/> */}
     </>
   )
 }

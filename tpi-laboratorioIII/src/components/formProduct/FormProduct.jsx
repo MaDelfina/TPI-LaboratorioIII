@@ -5,12 +5,12 @@ import Col from 'react-bootstrap/Col';
 import  Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
+import { PIZZAS } from '../data/Data';
 import PropTypes from "prop-types";
-
 
 //Se agrega a una variable globla que contiene toda la lista de productos.
 //no se si iria onProductDataSaved() o va directamente a la varable global. 
-const FormProduct = ({onProductDataSaved}) => {
+const FormProduct = () => {
     const [enteredName, setEnteredName] = useState("");
     const [enteredDescription, setEnteredDescription] = useState("");
     const [enteredStock, setEnteredStock] = useState("");
@@ -51,20 +51,23 @@ const FormProduct = ({onProductDataSaved}) => {
         event.preventDefault();
         enteredImageUrl === "" && setEnteredImageUrl("https://i.postimg.cc/DwcbBxMf/pizza-Gato.jpg");
         const ProductDto = {
-            id: 0,
+            id: 210,
             name: enteredName,
             description: enteredDescription,
             price: enteredStock !== "" ? parseInt(enteredStock, 10) : 0,
             stock: parseInt(enteredPrice, 10),
             imageUrl: enteredImageUrl,
         };
-
-        onProductDataSaved(ProductDto);
+        PIZZAS.push(ProductDto);
+        
         setEnteredName("");
         setEnteredDescription("");
         setEnteredStock("");
         setEnteredPrice("");
         setEnteredImageUrl("");
+
+        let formHeader = document.querySelector(".text-white")
+        formHeader.reset();
     };
 
 
@@ -146,7 +149,7 @@ const FormProduct = ({onProductDataSaved}) => {
                         </Row>
                         <Row className="justify-content-center">
                             <Col md={3} className="d-flex justify-content-center">
-                                <Button variant="success" type="submit" disabled={!formValid}>
+                                <Button style={{marginBottom:"10px"}} variant="success" type="submit" disabled={!formValid}>
                                     ADD PRODUCT
                                 </Button>
                             </Col>
