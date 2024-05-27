@@ -24,13 +24,6 @@ const Login = () => {
     setEnteredPass(event.target.value)
   }
 
-  const searchUser = () => {
-    const userExists = USERS.some(user => user.username === enteredUser && user.password === enteredPass);
-    if (!userExists) {
-      setErrors({...errors, exists: true});
-    }
-  }
-
   const loginHandler = (event) => {
     event.preventDefault()
     setErrors({...errors, exists: false})
@@ -47,7 +40,14 @@ const Login = () => {
       return
     }
 
-    searchUser()
+    if (USERS.some(user => user.username === enteredUser && user.password === enteredPass)) {
+      console.log("usuario encontrado")
+    } else {
+      setErrors({ ...errors, exists: true })
+      setEnteredUser('')
+      setEnteredPass('')
+      return
+    }
     
     setEnteredUser('')
     setEnteredPass('')
