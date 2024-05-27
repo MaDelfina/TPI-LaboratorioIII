@@ -1,6 +1,7 @@
 import './App.css'
 
 import ListProduct from './components/ListProduct/ListProduct'
+import AdminUsers from './components/adminUsers/AdminUsers'
 import Header from './components/header/Header'
 import Login from './components/login/Login'
 import MainLayout from './components/mainLayout/MainLayout'
@@ -25,6 +26,7 @@ function App() {
       path:'/adminUser',
       element:(
         <MainLayout>
+          <AdminUsers></AdminUsers>
           {/* <AdminUser/> todabia no existe */}
         </MainLayout>
       ),
