@@ -53,16 +53,18 @@ const Header = () => {
           <Col sm={10}>
             <Nav className='Nav-Bar' justify defaultActiveKey={""} bg="dark" data-bs-theme="dark">
               <Navbar.Brand href="" onClick={handleHomeNavigation}>
-                {/* <img
-                  src="https://i.postimg.cc/02pZMJqD/Horno-Gato-pizza.jpg"
-                  width="80"
-                  height="70"
+              <img
+                  src="https://i.postimg.cc/RFGrYyJd/Horno-Gato-pizza-fotor-bg-remover-20240527212818.png"
+                  // src="https://i.postimg.cc/90F2FCHs/gato-Pizza-fotor-bg-remover-20240527212233.png"
+                  width="60"
+                  height="50"
                   className="d-inline-block align-top"
                   alt="React Bootstrap logo"
-                />  PARA AGREGAR UNA IMG SI SE ENCUENTRA UNA PARA EL LOGO  */}
-                <h3>
+                />  
+                 {/* PARA AGREGAR UNA IMG SI SE ENCUENTRA UNA PARA EL LOGO */}
+                {/* <h3>
                   <Badge bg="success">Pizzeria 👍</Badge>
-                </h3>
+                </h3> */}
               </Navbar.Brand>
               <Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleHomeNavigation} >Home</Nav.Link>
