@@ -1,20 +1,14 @@
 import './App.css'
 import ListProduct from './components/ListProduct/ListProduct'
-
 import FormProduct from './components/formProduct/FormProduct'
-
 import AdminUsers from './components/adminUsers/AdminUsers'
 import Header from './components/header/Header'
-
 import Login from './components/login/Login'
 import MainLayout from './components/mainLayout/MainLayout'
 import Register from './components/register/Register'
-
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 function App() {
-
-  
   const router = createBrowserRouter([
     {
       path:'/',
@@ -86,7 +80,6 @@ function App() {
 
 
   return <RouterProvider router={router}/>
-
 }
 
 export default App
