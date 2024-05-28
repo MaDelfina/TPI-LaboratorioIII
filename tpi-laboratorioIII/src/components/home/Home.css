@@ -1,0 +1,36 @@
+.home-container {
+    padding: 0;
+    margin: 0;
+}
+
+.image-carousel{
+    padding-left: 0px 0px;
+}
+
+.image-home {
+    width: 100%;
+    height: auto;
+    margin-top: -4px;
+}
+
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.bg-dark {
+    background-color: #ffffff !important;
+}
+
+.text-light {
+    color: #fff !important;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 300;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}

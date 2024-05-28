@@ -13,7 +13,8 @@ export const PIZZAS = [
         description: "Delicious pizza with tomato sauce, mozzarella, and anchovies.",
         price: 10,
         stock: 0,
-        imageUrl: "https://i.postimg.cc/mkkxk6h5/ivan-torres-MQUqbmsz-GGM-unsplash.jpg"
+        imageUrl:'https://i.postimg.cc/DwcbBxMf/pizza-Gato.jpg'
+        // imageUrl: "https://i.postimg.cc/mkkxk6h5/ivan-torres-MQUqbmsz-GGM-unsplash.jpg"
     },
     {
         id: 2,

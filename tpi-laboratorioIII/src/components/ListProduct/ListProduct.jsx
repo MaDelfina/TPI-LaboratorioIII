@@ -43,6 +43,7 @@ const ListProduct = () => {
           <Col md={3}></Col>
 
           <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
+
             {error && 
             <Alert key="danger" variant="danger">
               {error}
@@ -65,7 +66,7 @@ const ListProduct = () => {
         </Row>
       </Container>
     </>
-  )
+  );
 }
 
 export default ListProduct;
