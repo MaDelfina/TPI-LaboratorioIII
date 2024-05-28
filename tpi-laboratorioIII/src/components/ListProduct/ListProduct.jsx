@@ -1,40 +1,55 @@
 import React, { useState } from 'react';
-import { Accordion, Container } from 'react-bootstrap';
+import { Accordion, Container, Alert } from 'react-bootstrap';
 import { PIZZAS } from '../data/Data';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ProductItem from '../productItem/ProductItem';
-import SearchProduct from '../search/SearchProduct';
+import Search from "../search/Search"
 import './listProduct.css';
 
 const ListProduct = () => {
-  const [pizzas, setPizzas] = useState(PIZZAS);
+  const [filterPizzas, setFilterPizzas] = useState(PIZZAS);
+  const [error, setError] = useState('');
 
   const searchHandler = (search) => {
-    const filterProducts = pizzas.filter(
-      (pizza) =>
-        pizza.name.toLowerCase().includes(search.toLowerCase())
-    );
-    setPizzas(filterProducts);
-  
-    if (filterProducts.length > 0) {
-      console.log(filterProducts);
+    if (search.trim() === "") {
+
+      setFilterPizzas(PIZZAS);
+      setError('');
+
     } else {
-      console.log("Pizza no encontrada");
+
+      const filterProducts = filterPizzas.filter(
+        (pizza) =>
+          pizza.name.toLowerCase().includes(search.toLowerCase())
+      );
+
+      setFilterPizzas(filterProducts);
+
+      if (filterProducts.length > 0) {
+        setError('');
+      } else {
+        setError('Pizza no encontrada');
+      }
     }
-  };
+  }
 
   return (
     <>
-      <SearchProduct onSearch={searchHandler} />
+      <Search onSearch={searchHandler} />
 
       <Container fluid='md'>
         <Row>
           <Col md={3}></Col>
 
           <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
+            {error && 
+            <Alert key="danger" variant="danger">
+              {error}
+            </Alert>
+            }
             <Accordion style={{ width: '30rem' }}>
-              {pizzas.map(pizza => (
+              {filterPizzas.map(pizza => (
                 <ProductItem
                   key={pizza.id}
                   name={pizza.name}
@@ -50,7 +65,7 @@ const ListProduct = () => {
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
 export default ListProduct;

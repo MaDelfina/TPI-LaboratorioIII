@@ -1,30 +1,39 @@
 import { useState } from "react";
-import { Form, Button, Col, Row } from "react-bootstrap";
+import { Form, Button, Col, Row, InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
+import "./Search.css"
 
-const SearchProduct = ({ onSearch }) => {
+const Search = ({ onSearch }) => {
     const [search, setSearch] = useState("");
 
-    const handlerSearch = () => {
+    const handleSearch = (event) => {
+        const searchValue = event.target.value;
+        setSearch(searchValue);
+        onSearch(searchValue);
+    }
+
+    const handleButtonClick = () => {
         onSearch(search);
     }
 
     return (
         <>
-            <Row className="justify-content-center">
+            <Row className="search">
                 <Col md={6} lg={4}>
                     <Form>
                         <Form.Group controlId="formBasicSearch">
-                            <Form.Control
-                                type="text"
-                                placeholder="Buscar producto"
-                                value={search}
-                                onChange={(event) => setSearch(event.target.value)}
-                            />
+                            <InputGroup>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Buscar producto"
+                                    value={search}
+                                    onChange={handleSearch}
+                                />
+                                <Button variant="outline-secondary" onClick={handleButtonClick}>
+                                    buscar
+                                </Button>
+                            </InputGroup>
                         </Form.Group>
-                        <Button variant="outline-secondary" onClick={handlerSearch}>
-                            busacar
-                        </Button>
                     </Form>
                 </Col>
             </Row>
@@ -32,8 +41,8 @@ const SearchProduct = ({ onSearch }) => {
     );
 }
 
-SearchProduct.propTypes = {
+Search.propTypes = {
     onSearch: PropTypes.func,
 };
 
-export default SearchProduct;
+export default Search;
