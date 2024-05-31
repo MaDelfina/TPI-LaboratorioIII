@@ -2,15 +2,14 @@ import React from 'react'
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from 'react-bootstrap/Col';
-import  Form from 'react-bootstrap/Form';
+import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
-import { PIZZAS } from '../data/Data';
 import PropTypes from "prop-types";
 
 //Se agrega a una variable globla que contiene toda la lista de productos.
 //no se si iria onProductDataSaved() o va directamente a la varable global. 
-const FormProduct = () => {
+const FormProduct = ({ onSalveProductHandler }) => {
     const [enteredName, setEnteredName] = useState("");
     const [enteredDescription, setEnteredDescription] = useState("");
     const [enteredStock, setEnteredStock] = useState("");
@@ -58,14 +57,14 @@ const FormProduct = () => {
             stock: parseInt(enteredPrice, 10),
             imageUrl: enteredImageUrl,
         };
-        PIZZAS.push(ProductDto);
-        
+
+        onSalveProductHandler(ProductDto);
+
         setEnteredName("");
         setEnteredDescription("");
         setEnteredStock("");
         setEnteredPrice("");
         setEnteredImageUrl("");
-
         let formHeader = document.querySelector(".text-white")
         formHeader.reset();
     };
@@ -74,12 +73,12 @@ const FormProduct = () => {
     return (
         <>
             <Row><Col>
-                <h1 style={{textAlign:'center'}}>      
-      <Badge bg="danger">New Product</Badge>
+                <h1 style={{ textAlign: 'center' }}>
+                    <Badge bg="danger">New Product</Badge>
                 </h1>
             </Col></Row>
             <Row >
-                <Col style={{ backgroundColor: '#e6b5b5', borderRadius:'15px' }} md={{ span: 6, offset: 3 }}>
+                <Col style={{ backgroundColor: '#e6b5b5', borderRadius: '15px' }} md={{ span: 6, offset: 3 }}>
                     <Form className="text-white" onSubmit={submitHandler}>
                         <Row>
                             <Col />
@@ -122,7 +121,7 @@ const FormProduct = () => {
                                     />
                                 </Form.Group>
                             </Col>
-                            <Col> </Col> 
+                            <Col> </Col>
                             <Col md={4}>
                                 <Form.Group className="mb-3" controlId="priceProduct">
                                     <Form.Label>Price</Form.Label>
@@ -149,7 +148,7 @@ const FormProduct = () => {
                         </Row>
                         <Row className="justify-content-center">
                             <Col md={3} className="d-flex justify-content-center">
-                                <Button style={{marginBottom:"10px"}} variant="success" type="submit" disabled={!formValid}>
+                                <Button style={{ marginBottom: "10px" }} variant="success" type="submit" disabled={!formValid}>
                                     ADD PRODUCT
                                 </Button>
                             </Col>
@@ -159,6 +158,10 @@ const FormProduct = () => {
             </Row >
         </>
     )
+}
+
+FormProduct.propTypes = {
+    onSalveProductHandler: PropTypes.func,
 }
 
 export default FormProduct
