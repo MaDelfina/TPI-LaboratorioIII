@@ -48,7 +48,9 @@ const FormProduct = ({ onSalveProductHandler }) => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        enteredImageUrl === "" && setEnteredImageUrl("https://i.postimg.cc/DwcbBxMf/pizza-Gato.jpg");
+        if (enteredImageUrl === "") {
+            setEnteredImageUrl("https://i.postimg.cc/DwcbBxMf/pizza-Gato.jpg"); //! No agrega la imagen y no se porque.
+        }
         const ProductDto = {
             id: 210,
             name: enteredName,
