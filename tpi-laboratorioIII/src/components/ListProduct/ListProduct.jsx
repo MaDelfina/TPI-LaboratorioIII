@@ -10,6 +10,7 @@ import './listProduct.css';
 const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState(PIZZAS);
   const [error, setError] = useState('');
+  const [cart, setCart] = useState([]);
 
   const searchHandler = (search) => {
     if (search.trim() === "") {
@@ -34,6 +35,10 @@ const ListProduct = () => {
     }
   }
 
+  const addToCart = (product) => {
+    setCart([...cart, product]); //va agregando el producto que le pasa el hijo
+  }
+  
   return (
     <>
       <Search onSearch={searchHandler} />
@@ -58,6 +63,7 @@ const ListProduct = () => {
                   price={pizza.price}
                   imgUrl={pizza.imageUrl}
                   id={pizza.id}
+                  addToCart={addToCart}
                 />
               ))}
             </Accordion>
