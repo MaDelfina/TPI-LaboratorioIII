@@ -5,6 +5,8 @@ import AdminUsers from './components/adminUsers/AdminUsers'
 import Login from './components/login/Login'
 import MainLayout from './components/mainLayout/MainLayout'
 import Register from './components/register/Register'
+import ShoppingCart from './components/shoppingCart/ShoppingCart'
+import Home from "./components/home/Home"
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Dashboard from './components/dashboard/Dashboard'
 
@@ -14,7 +16,7 @@ function App() {
       path: '/',
       element: (
         <MainLayout>
-          {/* <Home/> home todabia no existe */}
+          <Home/>
         </MainLayout>
       ),
     },
@@ -41,7 +43,7 @@ function App() {
       path: '/order',
       element: (
         <MainLayout>
-          {/* <Order/>  todabia no existe */}
+          <ShoppingCart/>
         </MainLayout>
       ),
     },
@@ -59,7 +61,10 @@ function App() {
       path: '/login',
       element: (
         <MainLayout>
-          <Login />
+
+          <Login/>
+
+
         </MainLayout>
       ),
     },

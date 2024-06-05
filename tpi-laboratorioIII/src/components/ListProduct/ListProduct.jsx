@@ -13,6 +13,9 @@ const ListProduct = ({ pizzas }) => {
   // console.log(pizzas)
   const [filterPizzas, setFilterPizzas] = useState([]);
   const [error, setError] = useState('');
+
+ 
+
   // const [loading, setLoading] = useState('ture');
   useEffect(() => {
     if (pizzas.length > 0) {
@@ -20,6 +23,7 @@ const ListProduct = ({ pizzas }) => {
       // setLoading(false); Hay que crear un spiner para que se muestre mientras se cargan las pizzas.
     }
   }, [pizzas]);
+
 
   // Cuando apreto enter en el boton se recarga la pagina 
   const searchHandler = (search) => {
@@ -45,6 +49,10 @@ const ListProduct = ({ pizzas }) => {
     }
   }
 
+  const addToCart = (product) => {
+    setCart([...cart, product]); //va agregando el producto que le pasa el hijo
+  }
+  
   return (
     <>
       <Container fluid='md'>
@@ -68,6 +76,7 @@ const ListProduct = ({ pizzas }) => {
                   price={pizza.price}
                   imgUrl={pizza.imageUrl}
                   id={pizza.id}
+                  addToCart={addToCart}
                 />
               ))}
             </Accordion>
