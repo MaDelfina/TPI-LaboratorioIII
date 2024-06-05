@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import './Login.css'
-import { Form, Button, Alert} from 'react-bootstrap'
+import { Form, Button, Alert, Container} from 'react-bootstrap'
 import { USERS } from '../data/Data'
 
 const Login = () => {
@@ -54,7 +54,7 @@ const Login = () => {
   }
 
   return (
-    <div className='login'>
+    <Container className='login'>
       <Form className='form-login' onSubmit={loginHandler}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
@@ -85,7 +85,7 @@ const Login = () => {
         {errors.exists && <Alert variant='danger' className='mt-3'>Credenciales inválidas</Alert>}
         {(errors.username || errors.password) && <Alert variant='warning' className='mt-3'>Debes completar todos los campos</Alert>}
       </Form>
-    </div>
+    </Container>
   )
 }
 
