@@ -5,7 +5,15 @@ import PropTypes from 'prop-types';
 import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 
-const ProductItem = ({ name, description, price, imgUrl, id }) => {
+const ProductItem = ({ name, description, price, imgUrl, id, addToCart }) => {
+
+  const HandleBuyProduct = () =>{
+    const product = {
+      name, description, price, imgUrl, id
+    };
+    addToCart(product)
+  }
+  
   return (
     <>
     <Accordion.Item eventKey={id} style={{ backgroundColor:'' }}>
@@ -13,8 +21,7 @@ const ProductItem = ({ name, description, price, imgUrl, id }) => {
       <Accordion.Body >
         <Image src={imgUrl} rounded/> <br/>
         {description} <br/><hr/>
-        <Button variant='success' style={{marginRight: "1.5rem"}}>Buy</Button> 
-        <Button variant='danger'>Delete</Button>
+        <Button variant='success' style={{marginRight: "1.5rem"}} onClick={HandleBuyProduct}>Agregar al carrito</Button> 
       </Accordion.Body>
     </Accordion.Item>
     </>
@@ -27,7 +34,8 @@ ProductItem.propType = {
   description: PropTypes.string,
   price: PropTypes.string,
   imgUrl: PropTypes.string,
-  id: PropTypes.number
+  id: PropTypes.number,
+  addToCart: PropTypes.func
 }
 
 export default ProductItem
