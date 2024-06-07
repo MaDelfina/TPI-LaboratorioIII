@@ -7,69 +7,76 @@ import MainLayout from './components/mainLayout/MainLayout'
 import Register from './components/register/Register'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Dashboard from './components/dashboard/Dashboard'
+import Protected from './components/routes/protected/Protected'
 
 function App() {
   const router = createBrowserRouter([
     {
       path: '/',
       element: (
-        <MainLayout>
-          {/* <Home/> home todabia no existe */}
-        </MainLayout>
+        <Protected>
+          <MainLayout>
+            {/* <Home/> home todabia no existe */}
+          </MainLayout>
+        </Protected>
       ),
     },
     {
       path: '/adminUser',
       element: (
-        <MainLayout>
-          <AdminUsers></AdminUsers>
-          {/* <AdminUser/> todabia no existe */}
-        </MainLayout>
+        <Protected>
+          <MainLayout>
+            <AdminUsers></AdminUsers>
+            {/* <AdminUser/> todabia no existe */}
+          </MainLayout>
+        </Protected>
       ),
     },
     {
       path: '/addProduct',
       element: (
-        <MainLayout>
-          <Dashboard>
-          <FormProduct />
-          </Dashboard>
-        </MainLayout>
+        <Protected>
+          <MainLayout>
+            <Dashboard>
+              <FormProduct />
+            </Dashboard>
+          </MainLayout>
+        </Protected>
       ),
     },
     {
       path: '/order',
       element: (
-        <MainLayout>
-          {/* <Order/>  todabia no existe */}
-        </MainLayout>
+        <Protected>
+          <MainLayout>
+            {/* <Order/>  todabia no existe */}
+          </MainLayout>
+        </Protected>
       ),
     },
     {
       path: '/products',
       element: (
-        <MainLayout>
-          <Dashboard>
-          <ListProduct />
-          </Dashboard>
-        </MainLayout>
+        <Protected>
+          <MainLayout>
+            <Dashboard>
+              <ListProduct />
+            </Dashboard>
+          </MainLayout>
+        </Protected>
       ),
     },
     {
       path: '/login',
       element: (
-        <MainLayout>
-          <Login />
-        </MainLayout>
+        <Login />
       ),
     },
     //El registrer supongo que se accede con un boton en login. 
     {
-      path: '/registrer',
+      path: '/register',
       element: (
-        <MainLayout>
-          <Register />
-        </MainLayout>
+        <Register />
       ),
     },
     {

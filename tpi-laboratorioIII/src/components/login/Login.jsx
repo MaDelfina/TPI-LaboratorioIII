@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import './Login.css'
 import { Form, Button, Alert, Container} from 'react-bootstrap'
-import { USERS } from '../data/Data'
+import {useNavigate} from 'react-router-dom'
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 const Login = () => {
   const [enteredUser, setEnteredUser] = useState('')
@@ -13,6 +14,9 @@ const Login = () => {
     password: false,
     exists: false,
   })
+  const navigate = useNavigate()
+
+  const {handleLogin, users} = useContext(AuthenticationContext)
 
   const usernameHandler = (event) => {
     setErrors({...errors, username: false})
@@ -23,6 +27,8 @@ const Login = () => {
     setErrors({...errors, password: false})
     setEnteredPass(event.target.value)
   }
+
+  const foundUser = users.find((u) => u.username === enteredUser && u.password === enteredPass)
 
   const loginHandler = (event) => {
     event.preventDefault()
@@ -40,8 +46,12 @@ const Login = () => {
       return
     }
 
-    if (USERS.some(user => user.username === enteredUser && user.password === enteredPass)) {
-      console.log("usuario encontrado")
+    if(foundUser){
+      if(foundUser.rol === 'client'){
+        handleLogin(enteredUser, foundUser.rol, foundUser.shopping_cart)
+      } else{
+        handleLogin(enteredUser, foundUser.rol)
+      }
     } else {
       setErrors({ ...errors, exists: true })
       setEnteredUser('')
@@ -49,8 +59,14 @@ const Login = () => {
       return
     }
     
+    navigate('/')
+
     setEnteredUser('')
     setEnteredPass('')
+  }
+
+  const registerButtonHandler = () => {
+    navigate('/register')
   }
 
   return (
@@ -73,7 +89,7 @@ const Login = () => {
           <Form.Control 
           ref={passwordRef} 
           value={enteredPass} 
-          type='text' 
+          type='password' 
           placeholder='Contraseña' 
           onChange={passwordHandler}
           className={errors.password && "border border-danger"}>
@@ -81,7 +97,8 @@ const Login = () => {
           </Form.Control>
         </Form.Group>
         <Button variant='primary' type='submit'>Login</Button>
-        <Button variant='outline-primary'>Register</Button>
+        <p className='mt-3'>¿Todavía no estás registrado?</p>
+        <Button variant='outline-primary' onClick={registerButtonHandler}>Go To Register</Button>
         {errors.exists && <Alert variant='danger' className='mt-3'>Credenciales inválidas</Alert>}
         {(errors.username || errors.password) && <Alert variant='warning' className='mt-3'>Debes completar todos los campos</Alert>}
       </Form>

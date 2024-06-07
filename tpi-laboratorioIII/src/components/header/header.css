@@ -19,3 +19,7 @@
     transition: background-color 0.9s ease, color 1.0s ease; 
     /*para que no cambie de golpe el color, no se si funciona bien.*/
 }
+
+.button-link {
+    background-color: black;
+}
