@@ -88,7 +88,7 @@ const AddNewAdmin = ({ usersArray }) => {
 
                             </Form.Control>
                         </Form.Group>
-                        <Button variant='dark' type='submit'>Add User Admin</Button>
+                        <Button className='mt-3' variant='dark' type='submit'>Add User Admin</Button>
                         {errors.exists && <Alert variant='danger' className='mt-3'>El usuario ingresado ya existe!</Alert>}
                         {(errors.username || errors.password) && <Alert variant='warning' className='mt-3'>Debes completar todos los campos</Alert>}
                     </Form>
