@@ -9,7 +9,7 @@ import ProductItem from '../productItem/ProductItem';
 import Search from "../search/Search"
 import './listProduct.css';
 
-const ListProduct = ({ pizzas }) => {
+const ListProduct = ({ pizzas, addToCart }) => {
   // console.log(pizzas)
   const [filterPizzas, setFilterPizzas] = useState([]);
   const [error, setError] = useState('');
@@ -47,10 +47,6 @@ const ListProduct = ({ pizzas }) => {
         setError('Pizza no encontrada');
       }
     }
-  }
-
-  const addToCart = (product) => {
-    setCart([...cart, product]); //va agregando el producto que le pasa el hijo
   }
   
   return (
@@ -90,6 +86,7 @@ const ListProduct = ({ pizzas }) => {
 
 ListProduct.propTypes = {
   pizzas: PropTypes.array,
+  addToCart: PropTypes.func,
 }
 
 export default ListProduct;
