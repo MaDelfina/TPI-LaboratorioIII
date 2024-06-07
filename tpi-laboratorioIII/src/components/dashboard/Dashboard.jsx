@@ -3,13 +3,14 @@ import React from 'react';
 import './Dashboard.css'
 import ListProduct from '../ListProduct/ListProduct';
 import FormProduct from '../formProduct/FormProduct';
+//import ProductItem from '../productItem/ProductItem';
 import { useState, useEffect } from 'react';
 
 // "https://localhost:8000/api/products/GetAll"
 
 const Dashboard = ({ children }) => {
   const [Products, setProducts] = useState([]);
-
+  const [cart, setCart] = useState([]);
 
   //ejecuta la funcion después de que el componente se haya renderizado o actualizado.
   useEffect(() => {
@@ -66,6 +67,28 @@ const Dashboard = ({ children }) => {
     }
   };
 
+  /*const addToCart = (product) => {
+    setCart(cart => [...cart, product]);
+  };*/
+
+  const shoppingCart = async (cart) => {
+
+    try {
+      const response = await fetch("http://localhost:8000/api/products", {
+        method: "PUT",
+        mode: "cors",
+        body: JSON.stringify(cart),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add new product");
+      }
+    }
+    catch(error) {
+      console.error("Error:", error);
+    };
+  }
+
+
 
   // Falta  Funcion async Delete productos, usuarios
   // Falta  Fucnion async  getAll Users.
@@ -83,10 +106,17 @@ const Dashboard = ({ children }) => {
   return React.Children.map(children, (child) => {
     if (child.type === ListProduct) {
       return React.cloneElement(child, { pizzas: Products })
+      //return React.cloneElement(child, { pizzas: Products, addToCart })
     }
     if (child.type === FormProduct) {
       return React.cloneElement(child, { onSalveProductHandler: saveProductHandler })
     }
+    if (child.type === shoppingCart) {
+      return React.cloneElement(child, { onShoppingCart: shoppingCart });
+    }
+    /*if (child.type === ProductItem){
+      return React.cloneElement(child, {} )
+    }*/
     //Mas if con los otos posibles hijos.
 
     return child;

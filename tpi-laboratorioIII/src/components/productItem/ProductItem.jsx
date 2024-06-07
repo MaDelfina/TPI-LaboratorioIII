@@ -21,8 +21,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, addToCart }) => {
       <Accordion.Body >
         <Image src={imgUrl} rounded/> <br/>
         {description} <br/><hr/>
-        <Button variant='success' style={{marginRight: "1.5rem"}} onClick={HandleBuyProduct}>Buy</Button> 
-        <Button variant='danger'>Delete</Button>
+        <Button variant='success' style={{marginRight: "1.5rem"}} onClick={HandleBuyProduct}>Agregar al carrito</Button> 
       </Accordion.Body>
     </Accordion.Item>
     </>

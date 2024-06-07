@@ -43,7 +43,9 @@ function App() {
       path: '/order',
       element: (
         <MainLayout>
-          <ShoppingCart/>
+          <Dashboard>
+            <ShoppingCart/>
+          </Dashboard>
         </MainLayout>
       ),
     },
