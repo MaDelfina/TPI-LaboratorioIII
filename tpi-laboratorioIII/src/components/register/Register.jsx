@@ -5,17 +5,20 @@ import Form from 'react-bootstrap/Form';
 import { USERS } from "../data/Data";
 import { useRef } from 'react';
 import './Register.css'
+import {useNavigate} from 'react-router-dom'
 
 function Register() {
     const [email, setEmail] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
-    const [completarCampos, setcompletarCampos] = useState(false);
-    const [constraseñaDistinta, setConstraseñaDistinta] = useState(false);
-    const [registroExitoso, setRegistroExitoso] = useState(false);
+    const [completeFields, setcompleteFields] = useState(false);
+    const [differentPassword, setDifferentPassword] = useState(false);
+    const [correctRegister, setCorrectRegister] = useState(false);
+    const [existingUser, setExistingUser] = useState(false);
     const emailRef = useRef(null);
     const password1Ref = useRef(null);
     const password2Ref = useRef(null);
+    const navigate = useNavigate()
 
     const handlerEmail = (event) => {
         setEmail(event.target.value)
@@ -33,7 +36,7 @@ function Register() {
         event.preventDefault();
 
         if (!email || !password1 || !password2) {
-            setcompletarCampos(true); //Mostrar la alerta si algún campo está vacío
+            setcompleteFields(true); //Mostrar la alerta si algún campo está vacío
             if (!email){
                 emailRef.current.focus()
             } else if (!password1){
@@ -46,7 +49,13 @@ function Register() {
         }
 
         if (password1 != password2) {
-            setConstraseñaDistinta(true);
+            setDifferentPassword(true);
+            return;
+        }
+
+        const userExist = USERS.some((user) => user.username === email && user.password === password1)
+        if (userExist) {
+            setExistingUser(true);
             return;
         }
 
@@ -58,11 +67,15 @@ function Register() {
             rol: "client"
         }
 
-        setRegistroExitoso(true);
+        setCorrectRegister(true);
 
         USERS.push(newClient);
         console.log('Nuevo cliente agregado:', newClient);
         console.log("clientes: ", USERS);
+    }
+
+    const loginButtonHandler = () =>{
+        navigate("/login")
     }
 
     return (
@@ -86,22 +99,32 @@ function Register() {
                 <Button variant="outline-secondary" type="submit">
                     Registrarme
                 </Button>
+                <hr />
+                <Button variant="outline-secondary" type="submit" onClick={loginButtonHandler}>
+                    Iniciar sesion
+                </Button>
 
-                {registroExitoso && (
-                    <Alert variant="success" onClose={() => setRegistroExitoso(false)} dismissible>
+                {correctRegister && (
+                    <Alert variant="success" onClose={() => setCorrectRegister(false)} dismissible>
                         ¡Registro exitoso!
                     </Alert>
                 )}
 
-                {completarCampos && (
-                    <Alert variant="danger" onClose={() => setcompletarCampos(false)} dismissible>
+                {completeFields && (
+                    <Alert variant="danger" onClose={() => setcompleteFields(false)} dismissible>
                         ¡Falta completar campos!
                     </Alert>
                 )}
 
-                {constraseñaDistinta && (
-                    <Alert variant="danger" onClose={() => setConstraseñaDistinta(false)} dismissible>
+                {differentPassword && (
+                    <Alert variant="danger" onClose={() => setDifferentPassword(false)} dismissible>
                         ¡Las contraselas no coinciden!
+                    </Alert>
+                )}
+
+                {existingUser && (
+                    <Alert variant='danger' onClose={() => setExistingUser(false)} dismissible>
+                        !Usuario ya existete!
                     </Alert>
                 )}
             </Form>
