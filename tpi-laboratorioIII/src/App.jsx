@@ -23,8 +23,7 @@ function App() {
       path: '/adminUser',
       element: (
         <MainLayout>
-          <AdminUsers></AdminUsers>
-          {/* <AdminUser/> todabia no existe */}
+          <AdminUsers/>
         </MainLayout>
       ),
     },
@@ -32,9 +31,7 @@ function App() {
       path: '/addProduct',
       element: (
         <MainLayout>
-          <Dashboard>
           <FormProduct />
-          </Dashboard>
         </MainLayout>
       ),
     },
@@ -50,9 +47,7 @@ function App() {
       path: '/products',
       element: (
         <MainLayout>
-          <Dashboard>
           <ListProduct />
-          </Dashboard>
         </MainLayout>
       ),
     },
@@ -64,7 +59,6 @@ function App() {
         </MainLayout>
       ),
     },
-    //El registrer supongo que se accede con un boton en login. 
     {
       path: '/registrer',
       element: (

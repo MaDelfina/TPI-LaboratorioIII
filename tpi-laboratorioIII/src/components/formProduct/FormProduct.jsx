@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 
 //Se agrega a una variable globla que contiene toda la lista de productos.
 //no se si iria onProductDataSaved() o va directamente a la varable global. 
-const FormProduct = ({ onSalveProductHandler }) => {
+const FormProduct = () => {
     const [enteredName, setEnteredName] = useState("");
     const [enteredDescription, setEnteredDescription] = useState("");
     const [enteredStock, setEnteredStock] = useState("");
@@ -60,7 +60,7 @@ const FormProduct = ({ onSalveProductHandler }) => {
             imageUrl: enteredImageUrl,
         };
 
-        onSalveProductHandler(ProductDto);
+        salveProductHandler(ProductDto);
 
         setEnteredName("");
         setEnteredDescription("");
@@ -70,6 +70,39 @@ const FormProduct = ({ onSalveProductHandler }) => {
         let formHeader = document.querySelector(".text-white")
         formHeader.reset();
     };
+
+
+    /* Llama a la api */
+
+     //?Guarda el nuevo producto en la API con una funcion asincrono.
+  const salveProductHandler = async (enteredProductData) => {
+    const productDto = {
+      id: 0,
+      name: enteredProductData.name,
+      description: enteredProductData.description,
+      price: enteredProductData.price,
+      stock: enteredProductData.stock,
+      imageUrl: enteredProductData.imageUrl
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/api/products", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(productDto),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add new product");
+      }
+    //   const data = await response.json();
+    //   setProducts(data);
+    //   fetchProducts(); //llama a la fucnion para obtener los productos acutalizados
+    }
+    catch (error) {
+      alert(error);
+    }
+  };
 
 
     return (
