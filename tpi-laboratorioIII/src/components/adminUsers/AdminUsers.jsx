@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
-import { USERS } from '../data/Data'
+import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap'
 import ClientsList from '../clientsList/ClientsList'
 import AdminsList from '../adminsList/AdminsList'
+import AddNewAdmin from '../addNewAdmin/AddNewAdmin'
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 const AdminUsers = () => {
-    const [users, setUsers] = useState(USERS)
+  const {users} = useContext(AuthenticationContext)
+
   return (
-    <Container className='d-flex'>
-        <ClientsList usersArray={users}></ClientsList>
-        <AdminsList usersArray={users}></AdminsList>
+    <Container className='d-flex justify-content-around'>
+      <ClientsList usersArray={users}></ClientsList>
+      <AdminsList usersArray={users}></AdminsList>
+      <AddNewAdmin usersArray={users}></AddNewAdmin>
     </Container>
   )
 }

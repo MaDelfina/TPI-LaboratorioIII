@@ -9,6 +9,7 @@ import ProductItem from '../productItem/ProductItem';
 import Search from "../search/Search"
 import './listProduct.css';
 
+
 const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState([]);
   const [error, setError] = useState('');
@@ -19,6 +20,7 @@ const ListProduct = () => {
       // setLoading(false); Hay que crear un spiner para que se muestre mientras se cargan las pizzas.
     }
   }, [filterPizzas]);
+
 
 
   /* Llama a la api */
@@ -71,7 +73,7 @@ const ListProduct = () => {
       }
     }
   }
-
+  
   return (
     <>
       <Container fluid='md'>
@@ -97,6 +99,8 @@ const ListProduct = () => {
                   id={pizza.id}
                   stock={pizza.stock}
                   onFetchProducts={fetchProducts}
+
+                  addToCart={addToCart}
                 />
               ))}
             </Accordion>
@@ -109,3 +113,4 @@ const ListProduct = () => {
 }
 
 export default ListProduct;
+

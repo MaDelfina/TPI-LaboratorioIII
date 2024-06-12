@@ -6,7 +6,7 @@ const AdminsList = ({usersArray}) => {
     const filteredAdmins = usersArray.filter((user) => user.rol === 'admin')
 
     return (
-        <Container style={{maxWidth: '400px'}}>
+        <Container style={{width: '400px', padding: "15px"}}>
             <h4>Administrators</h4>
             <ListGroup>
                 {filteredAdmins.map((user) => (

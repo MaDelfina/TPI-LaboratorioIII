@@ -29,6 +29,14 @@ const ProductItem = ({ name, description, price, imgUrl, id, stock, onFetchProdu
     }
   }
 
+  const ProductItem = ({ name, description, price, imgUrl, id, addToCart }) => {
+
+  const HandleBuyProduct = () =>{
+    const product = {
+      name, description, price, imgUrl, id
+    };
+    addToCart(product)
+  }
 
 
   return (
@@ -38,10 +46,11 @@ const ProductItem = ({ name, description, price, imgUrl, id, stock, onFetchProdu
         <Accordion.Body >
           <Image src={imgUrl} rounded /> <br />
           {description} <br /><hr />
-          <Button variant='success' style={{ marginRight: "1.5rem" }}>Buy</Button>
+          <Button variant='success' style={{marginRight: "1.5rem"}} onClick={HandleBuyProduct}>Agregar al carrito</Button> 
           <Button variant='danger' onClick={deleteProducts}>Delete</Button>
         </Accordion.Body>
       </Accordion.Item>
+
     </>
   )
 }
@@ -53,8 +62,11 @@ ProductItem.propType = {
   price: PropTypes.string,
   imgUrl: PropTypes.string,
   id: PropTypes.number,
+
   stock: PropTypes.number, 
   onFetchProducts: PropTypes.func,
+  addToCart: PropTypes.func
+
 }
 
 export default ProductItem
