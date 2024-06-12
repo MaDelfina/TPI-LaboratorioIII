@@ -96,6 +96,7 @@ const ListProduct = () => {
                   imgUrl={pizza.imageUrl}
                   id={pizza.id}
                   stock={pizza.stock}
+                  onFetchProducts={fetchProducts}
                 />
               ))}
             </Accordion>

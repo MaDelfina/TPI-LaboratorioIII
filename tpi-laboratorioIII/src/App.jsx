@@ -7,6 +7,7 @@ import Login from './components/login/Login'
 import MainLayout from './components/mainLayout/MainLayout'
 import Register from './components/register/Register'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Home from './components/home/Home';
 import Dashboard from './components/dashboard/Dashboard'
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
       path: '/',
       element: (
         <MainLayout>
-          {/* <Home/> home todabia no existe */}
+        <Home/>
         </MainLayout>
       ),
     },

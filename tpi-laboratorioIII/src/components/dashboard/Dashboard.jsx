@@ -1,8 +1,6 @@
 
 import React from 'react';
 import './Dashboard.css'
-import ListProduct from '../ListProduct/ListProduct';
-import FormProduct from '../formProduct/FormProduct';
 import { useState, useEffect } from 'react';
 
 // "https://localhost:8000/api/products/GetAll"

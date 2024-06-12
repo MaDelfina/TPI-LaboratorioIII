@@ -57,7 +57,7 @@ const FormProduct = () => {
             description: enteredDescription,
             price: enteredStock !== "" ? parseInt(enteredStock, 10) : 0,
             stock: parseInt(enteredPrice, 10),
-            imageUrl: enteredImageUrl,
+            imageUrl: "https://i.postimg.cc/DwcbBxMf/pizza-Gato.jpg",
         };
 
         salveProductHandler(ProductDto);
@@ -74,36 +74,34 @@ const FormProduct = () => {
 
     /* Llama a la api */
 
-     //?Guarda el nuevo producto en la API con una funcion asincrono.
-  const salveProductHandler = async (enteredProductData) => {
-    const productDto = {
-      id: 0,
-      name: enteredProductData.name,
-      description: enteredProductData.description,
-      price: enteredProductData.price,
-      stock: enteredProductData.stock,
-      imageUrl: enteredProductData.imageUrl
+    //?Guarda el nuevo producto en la API con una funcion asincrono.
+    const salveProductHandler = async (enteredProductData) => {
+        const productDto = {
+            id: 0,
+            name: enteredProductData.name,
+            description: enteredProductData.description,
+            price: enteredProductData.price,
+            stock: enteredProductData.stock,
+            imageUrl: enteredProductData.imageUrl
+        };
+
+        try {
+            const response = await fetch("http://localhost:8000/api/products", {
+                method: "POST",
+                mode: "cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(productDto),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to add new product");
+            }
+        }
+        catch (error) {
+            alert(error);
+        }
     };
 
-    try {
-      const response = await fetch("http://localhost:8000/api/products", {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(productDto),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add new product");
-      }
-    //   const data = await response.json();
-    //   setProducts(data);
-    //   fetchProducts(); //llama a la fucnion para obtener los productos acutalizados
-    }
-    catch (error) {
-      alert(error);
-    }
-  };
-
+    /* --------------------- */
 
     return (
         <>
