@@ -3,12 +3,16 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import Accordion from 'react-bootstrap/Accordion';
-import Image, { propTypes } from 'react-bootstrap/Image';
+import Image from 'react-bootstrap/Image';
+import { useContext } from 'react';
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
 
-const ProductItem = ({ name, description, price, imgUrl, id, stock, onFetchProducts }) => {
 
+const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, addToCart }) => {
+
+  const {user} = useContext(AuthenticationContext)
+  const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
   /* Llamada a la api */
-
   //? Elimina los productos por id
   const deleteProducts = async () => {
     const productDto = id
@@ -29,15 +33,13 @@ const ProductItem = ({ name, description, price, imgUrl, id, stock, onFetchProdu
     }
   }
 
-  const ProductItem = ({ name, description, price, imgUrl, id, addToCart }) => {
-
-  const HandleBuyProduct = () =>{
+  const HandleAddToShoppingCard = () => {
+    //llamar a la api para modificar el usuario
     const product = {
-      name, description, price, imgUrl, id
+      name, description, price, imgUrl, id 
     };
     addToCart(product)
   }
-
 
   return (
     <>
@@ -46,8 +48,10 @@ const ProductItem = ({ name, description, price, imgUrl, id, stock, onFetchProdu
         <Accordion.Body >
           <Image src={imgUrl} rounded /> <br />
           {description} <br /><hr />
-          <Button variant='success' style={{marginRight: "1.5rem"}} onClick={HandleBuyProduct}>Agregar al carrito</Button> 
-          <Button variant='danger' onClick={deleteProducts}>Delete</Button>
+          <Button variant='success' style={{ marginRight: "1.5rem" }} onClick={HandleAddToShoppingCard}>Agregar al carrito</Button>
+          
+          {isAdmin() && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
+
         </Accordion.Body>
       </Accordion.Item>
 
@@ -55,18 +59,14 @@ const ProductItem = ({ name, description, price, imgUrl, id, stock, onFetchProdu
   )
 }
 
-
 ProductItem.propType = {
   name: PropTypes.string,
   description: PropTypes.string,
   price: PropTypes.string,
   imgUrl: PropTypes.string,
   id: PropTypes.number,
-
-  stock: PropTypes.number, 
   onFetchProducts: PropTypes.func,
   addToCart: PropTypes.func
-
 }
 
 export default ProductItem

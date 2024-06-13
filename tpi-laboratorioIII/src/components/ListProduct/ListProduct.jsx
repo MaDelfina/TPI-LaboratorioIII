@@ -13,6 +13,9 @@ import './listProduct.css';
 const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState([]);
   const [error, setError] = useState('');
+
+
+
   // const [loading, setLoading] = useState('ture'); //Spiner
   useEffect(() => {
     if (filterPizzas.length > 0) {
@@ -100,7 +103,7 @@ const ListProduct = () => {
                   stock={pizza.stock}
                   onFetchProducts={fetchProducts}
 
-                  addToCart={addToCart}
+                  // addToCart={addToCart}
                 />
               ))}
             </Accordion>

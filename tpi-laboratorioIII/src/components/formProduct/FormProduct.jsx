@@ -193,8 +193,4 @@ const FormProduct = () => {
     )
 }
 
-FormProduct.propTypes = {
-    onSalveProductHandler: PropTypes.func,
-}
-
 export default FormProduct

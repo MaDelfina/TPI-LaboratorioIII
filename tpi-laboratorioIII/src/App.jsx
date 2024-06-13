@@ -8,7 +8,6 @@ import Register from './components/register/Register'
 import ShoppingCart from './components/shoppingCart/ShoppingCart'
 import Home from "./components/home/Home"
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Home from './components/home/Home';
 import Dashboard from './components/dashboard/Dashboard'
 import Protected from './components/routes/protected/Protected'
 
@@ -40,9 +39,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <Dashboard>
               <FormProduct />
-            </Dashboard>
           </MainLayout>
         </Protected>
       ),
@@ -64,9 +61,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <Dashboard>
               <ListProduct />
-            </Dashboard>
           </MainLayout>
         </Protected>
       ),
