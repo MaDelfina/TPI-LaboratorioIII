@@ -12,8 +12,11 @@ import { AuthenticationContext } from '../../services/authentication/Authenticat
 
 const Header = () => {
   const navigate = useNavigate();
+  // const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
+  // const isSuperAdmin = () => user.role === "super-admin";
+  // const isClient = () => user.role === "client"
 
-  const {handleLogout} = useContext(AuthenticationContext)
+  const { handleLogout } = useContext(AuthenticationContext)
 
   const handleHomeNavigation = (event) => {
     event.preventDefault();
