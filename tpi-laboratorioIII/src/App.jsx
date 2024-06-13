@@ -39,9 +39,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <Dashboard>
               <FormProduct />
-            </Dashboard>
           </MainLayout>
         </Protected>
       ),
@@ -63,9 +61,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <Dashboard>
               <ListProduct />
-            </Dashboard>
           </MainLayout>
         </Protected>
       ),
@@ -76,7 +72,6 @@ function App() {
         <Login />
       ),
     },
-    //El registrer supongo que se accede con un boton en login. 
     {
       path: '/register',
       element: (

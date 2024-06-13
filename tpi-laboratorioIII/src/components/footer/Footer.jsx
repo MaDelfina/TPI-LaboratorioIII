@@ -5,7 +5,7 @@ import "./Footer.css";
 const Footer = () => {
     return (
         
-            <div className='footer'>
+            <div className='footer' style={{marginTop:"20px"}} >
                 <Row className='row'>
                     <Col md="4">
                         <h5>Donde encontrarnos: </h5>

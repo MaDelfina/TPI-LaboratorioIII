@@ -6,10 +6,12 @@ import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
 
-const ProductItem = ({ name, description, price, imgUrl, id }) => {
+const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) => {
+
   const {user} = useContext(AuthenticationContext)
   const [userInfo, setUserInfo] = useState({})
-
+  const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
+  
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${user.id}`, {
       headers: {
@@ -22,10 +24,30 @@ const ProductItem = ({ name, description, price, imgUrl, id }) => {
       })
       .catch((error) => console.log(error))
   }, [])
+  /* Llamada a la api */
+  //? Elimina los productos por id
+  const deleteProducts = async () => {
+    const productDto = id
+    try {
+      const response = await fetch(`http://localhost:8000/api/products/${productDto}`, {
+        method: "DELETE",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error("Error in obtaining products");
+      }
+      onFetchProducts();
+      console.log("Product deleted successfully")
+    }
+    catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
-  const addToCart = async () => {
+  const HandleAddToShoppingCart = () => {
     const product = {
-      name, description, price, imgUrl, id
+      name, description, price, imgUrl, id 
     };
 
     try {
@@ -52,21 +74,24 @@ const ProductItem = ({ name, description, price, imgUrl, id }) => {
       console.error("Error:", error);
     };
   }
-  
+
   return (
     <>
-    <Accordion.Item eventKey={id} style={{ backgroundColor:'' }}>
-      <Accordion.Header  >{name} - price ${price}</Accordion.Header>
-      <Accordion.Body >
-        <Image src={imgUrl} rounded/> <br/>
-        {description} <br/><hr/>
-        <Button variant='success' style={{marginRight: "1.5rem"}} onClick={addToCart}>Agregar al carrito</Button> 
-      </Accordion.Body>
-    </Accordion.Item>
+      <Accordion.Item eventKey={id} style={{ backgroundColor: '' }}>
+        <Accordion.Header  >{name} - price ${price}</Accordion.Header>
+        <Accordion.Body >
+          <Image src={imgUrl} rounded /> <br />
+          {description} <br /><hr />
+          <Button variant='success' style={{ marginRight: "1.5rem" }} onClick={HandleAddToShoppingCart}>Agregar al carrito</Button>
+          
+          {isAdmin() && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
+
+        </Accordion.Body>
+      </Accordion.Item>
+
     </>
   )
 }
-
 
 ProductItem.propType = {
   name: PropTypes.string,
@@ -74,6 +99,7 @@ ProductItem.propType = {
   price: PropTypes.string,
   imgUrl: PropTypes.string,
   id: PropTypes.number,
+  onFetchProducts: PropTypes.func
 }
 
 export default ProductItem
