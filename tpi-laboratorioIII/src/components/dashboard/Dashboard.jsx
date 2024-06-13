@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
 import './Dashboard.css'
 import ListProduct from '../ListProduct/ListProduct';
 import FormProduct from '../formProduct/FormProduct';
-//import ProductItem from '../productItem/ProductItem';
+import ProductItem from '../productItem/ProductItem';
 import { useState, useEffect } from 'react';
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
 
 // "https://localhost:8000/api/products/GetAll"
 
@@ -12,29 +13,31 @@ const Dashboard = ({ children }) => {
   const [Products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
 
+  const { user } = useContext(AuthenticationContext)
+
   //ejecuta la funcion después de que el componente se haya renderizado o actualizado.
   useEffect(() => {
     fetchProducts();
   }, []);
 
   //? Llama a todos los productos que hay en la API y los guarda con setProducts().
-  const fetchProducts = async ()=> {
+  const fetchProducts = async () => {
     //intenta hacer esto
-    try{
+    try {
       const response = await fetch("http://localhost:8000/api/products", {
         method: "GET",
         mode: "cors",
       });
       if (!response.ok) {
         throw new Error("Error in obtaining products");
-      } 
+      }
       const ProductsData = await response.json();
       setProducts(ProductsData);
     }
     //si no lo logra tira error.
-    catch(error) {
-        console.error("Error:", error);
-      };
+    catch (error) {
+      console.error("Error:", error);
+    };
   };
 
   //?Guarda el nuevo producto en la API con una funcion asincrono.
@@ -71,19 +74,34 @@ const Dashboard = ({ children }) => {
     setCart(cart => [...cart, product]);
   };*/
 
-  const shoppingCart = async (cart) => {
+  const addToCart = async (product) => {
 
     try {
-      const response = await fetch("http://localhost:8000/api/products", {
+      const userResponse = await fetch(`http://localhost:8000/api/users/${user.id}`);
+      if (!userResponse.ok) {
+        throw new Error("Failed to fetch user info");
+      }
+      const userInfo = await userResponse.json();
+      const userUpdated = {
+        id: userInfo.id,
+        username: userInfo.username,
+        password: userInfo.password,
+        shopping_cart: [...userInfo.shopping_cart, product],
+        rol: userInfo.rol
+      }
+
+      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
         method: "PUT",
         mode: "cors",
-        body: JSON.stringify(cart),
+        body: JSON.stringify(userUpdated),
       });
       if (!response.ok) {
         throw new Error("Failed to add new product");
       }
+      const data = await response.json()
+      console.log("added products to cart")
     }
-    catch(error) {
+    catch (error) {
       console.error("Error:", error);
     };
   }
@@ -111,11 +129,11 @@ const Dashboard = ({ children }) => {
     if (child.type === FormProduct) {
       return React.cloneElement(child, { onSalveProductHandler: saveProductHandler })
     }
-    if (child.type === shoppingCart) {
+    /*if (child.type === shoppingCart) {
       return React.cloneElement(child, { onShoppingCart: shoppingCart });
-    }
+    } */
     /*if (child.type === ProductItem){
-      return React.cloneElement(child, {} )
+      return React.cloneElement(child, { addToCart: addToCart } )
     }*/
     //Mas if con los otos posibles hijos.
 
