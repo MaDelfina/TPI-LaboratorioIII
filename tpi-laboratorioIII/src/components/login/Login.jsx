@@ -1,10 +1,11 @@
-import { useContext, useRef, useState } from 'react'
+import { useContext, useRef, useState, useEffect } from 'react'
 import './Login.css'
 import { Form, Button, Alert, Container} from 'react-bootstrap'
 import {useNavigate} from 'react-router-dom'
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 const Login = () => {
+  const [users, setUsers] = useState([])
   const [enteredUser, setEnteredUser] = useState('')
   const [enteredPass, setEnteredPass] = useState('')
   const usernameRef = useRef(null)
@@ -16,7 +17,20 @@ const Login = () => {
   })
   const navigate = useNavigate()
 
-  const {handleLogin, users} = useContext(AuthenticationContext)
+  const {handleLogin} = useContext(AuthenticationContext)
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/users", {
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUsers(data)
+      })
+      .catch((error) => console.log(error))
+  }, []) 
 
   const usernameHandler = (event) => {
     setErrors({...errors, username: false})
@@ -30,7 +44,7 @@ const Login = () => {
 
   const foundUser = users.find((u) => u.username === enteredUser && u.password === enteredPass)
 
-  const loginHandler = (event) => {
+  const loginHandler = async (event) => {
     event.preventDefault()
     setErrors({...errors, exists: false})
 
@@ -46,12 +60,30 @@ const Login = () => {
       return
     }
 
-    if(foundUser){
-      if(foundUser.rol === 'client'){
-        handleLogin(enteredUser, foundUser.rol, foundUser.shopping_cart)
-      } else{
-        handleLogin(enteredUser, foundUser.rol)
+    /*
+    try {
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Usuario o contraseña incorrectos');
       }
+
+      const data = await response.json();
+      console.log('Login successful', data);
+      // Guardar el token en el almacenamiento local o en el estado de la aplicación
+      localStorage.setItem('token', data.token);
+    } catch (err) {
+      console.error('Login failed', err);
+    } */
+
+    if(foundUser){
+      handleLogin(enteredUser, foundUser.rol, foundUser.id)
     } else {
       setErrors({ ...errors, exists: true })
       setEnteredUser('')
