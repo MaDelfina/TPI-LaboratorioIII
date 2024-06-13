@@ -45,7 +45,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
     }
   }
 
-  const HandleAddToShoppingCart = () => {
+  const HandleAddToShoppingCart = async () => {
     const product = {
       name, description, price, imgUrl, id 
     };

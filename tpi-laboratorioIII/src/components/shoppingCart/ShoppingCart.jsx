@@ -6,10 +6,11 @@ import { AuthenticationContext } from "../../services/authentication/Authenticat
 const ShoppingCart = () => {
     const [cart, setCart] = useState([])
 
-    const {user} = useContext(AuthenticationContext)
+    const { user } = useContext(AuthenticationContext)
 
     useEffect(() => {
         fetch(`http://localhost:8000/api/users/${user.id}`, {
+            method: "GET",
             headers: {
                 accept: "application/json",
             },
