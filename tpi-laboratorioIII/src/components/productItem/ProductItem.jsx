@@ -3,9 +3,33 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import Accordion from 'react-bootstrap/Accordion';
-import Image from 'react-bootstrap/Image';
+import Image, { propTypes } from 'react-bootstrap/Image';
 
-const ProductItem = ({ name, description, price, imgUrl, id, addToCart }) => {
+const ProductItem = ({ name, description, price, imgUrl, id, stock, onFetchProducts }) => {
+
+  /* Llamada a la api */
+
+  //? Elimina los productos por id
+  const deleteProducts = async () => {
+    const productDto = id
+    try {
+      const response = await fetch(`http://localhost:8000/api/products/${productDto}`, {
+        method: "DELETE",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error("Error in obtaining products");
+      }
+      onFetchProducts();
+      console.log("Product deleted successfully")
+    }
+    catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  const ProductItem = ({ name, description, price, imgUrl, id, addToCart }) => {
 
   const HandleBuyProduct = () =>{
     const product = {
@@ -13,17 +37,20 @@ const ProductItem = ({ name, description, price, imgUrl, id, addToCart }) => {
     };
     addToCart(product)
   }
-  
+
+
   return (
     <>
-    <Accordion.Item eventKey={id} style={{ backgroundColor:'' }}>
-      <Accordion.Header  >{name} - price ${price}</Accordion.Header>
-      <Accordion.Body >
-        <Image src={imgUrl} rounded/> <br/>
-        {description} <br/><hr/>
-        <Button variant='success' style={{marginRight: "1.5rem"}} onClick={HandleBuyProduct}>Agregar al carrito</Button> 
-      </Accordion.Body>
-    </Accordion.Item>
+      <Accordion.Item eventKey={id} style={{ backgroundColor: '' }}>
+        <Accordion.Header  >{name} - price ${price}</Accordion.Header>
+        <Accordion.Body >
+          <Image src={imgUrl} rounded /> <br />
+          {description} <br /><hr />
+          <Button variant='success' style={{marginRight: "1.5rem"}} onClick={HandleBuyProduct}>Agregar al carrito</Button> 
+          <Button variant='danger' onClick={deleteProducts}>Delete</Button>
+        </Accordion.Body>
+      </Accordion.Item>
+
     </>
   )
 }
@@ -35,7 +62,11 @@ ProductItem.propType = {
   price: PropTypes.string,
   imgUrl: PropTypes.string,
   id: PropTypes.number,
+
+  stock: PropTypes.number, 
+  onFetchProducts: PropTypes.func,
   addToCart: PropTypes.func
+
 }
 
 export default ProductItem

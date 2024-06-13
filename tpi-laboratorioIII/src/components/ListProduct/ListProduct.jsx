@@ -9,27 +9,52 @@ import ProductItem from '../productItem/ProductItem';
 import Search from "../search/Search"
 import './listProduct.css';
 
-const ListProduct = ({ pizzas, addToCart }) => {
-  // console.log(pizzas)
+
+const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState([]);
   const [error, setError] = useState('');
-
- 
-
-  // const [loading, setLoading] = useState('ture');
+  // const [loading, setLoading] = useState('ture'); //Spiner
   useEffect(() => {
-    if (pizzas.length > 0) {
-      setFilterPizzas(pizzas);
+    if (filterPizzas.length > 0) {
+      setFilterPizzas(filterPizzas);
       // setLoading(false); Hay que crear un spiner para que se muestre mientras se cargan las pizzas.
     }
-  }, [pizzas]);
+  }, [filterPizzas]);
 
 
-  // Cuando apreto enter en el boton se recarga la pagina 
+
+  /* Llama a la api */
+
+  //? Llama a todos los productos que hay en la API y los guarda con setProducts().
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/products", {
+        method: "GET",
+        mode: "cors",
+      });
+      if (!response.ok) {
+        throw new Error("Error in obtaining products");
+      }
+      const ProductsData = await response.json();
+      setFilterPizzas(ProductsData);
+    }
+    catch (error) {
+      console.error("Error:", error);
+    };
+  };
+
+  /* ---------------- */
+
+
+  // Cuando apreto enter en el boton recarga la pagina 
   const searchHandler = (search) => {
     if (search.trim() === "") {
 
-      setFilterPizzas(pizzas);
+      setFilterPizzas(filterPizzas);
       setError('');
 
     } else {
@@ -72,6 +97,9 @@ const ListProduct = ({ pizzas, addToCart }) => {
                   price={pizza.price}
                   imgUrl={pizza.imageUrl}
                   id={pizza.id}
+                  stock={pizza.stock}
+                  onFetchProducts={fetchProducts}
+
                   addToCart={addToCart}
                 />
               ))}
@@ -84,9 +112,5 @@ const ListProduct = ({ pizzas, addToCart }) => {
   );
 }
 
-ListProduct.propTypes = {
-  pizzas: PropTypes.array,
-  addToCart: PropTypes.func,
-}
-
 export default ListProduct;
+
