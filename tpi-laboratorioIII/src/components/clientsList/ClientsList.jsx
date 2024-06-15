@@ -2,7 +2,7 @@
 import EachClient from '../eachClient/EachClient'
 import { Container, ListGroup } from 'react-bootstrap'
 
-const ClientsList = ({usersArray}) => {
+const ClientsList = ({usersArray, onDeleteUser}) => {
     const filteredClients = usersArray.filter((user) => user.rol === 'client')
 
     return (
@@ -10,7 +10,7 @@ const ClientsList = ({usersArray}) => {
             <h4>Clients</h4>
             <ListGroup>
                 {filteredClients.map((user) => (
-                    <EachClient key={user.id} name={user.username}></EachClient>
+                    <EachClient key={user.id} name={user.username} onDelete={onDeleteUser} id={user.id} />
                 ))}
             </ListGroup>
         </Container>

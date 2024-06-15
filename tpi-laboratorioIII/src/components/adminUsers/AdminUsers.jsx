@@ -20,11 +20,27 @@ const AdminUsers = () => {
       .catch((error) => console.log(error))
   }, [])
 
+  const handleDeleteUser = async (userId) => {
+    try{
+      const response = await fetch(`http://localhost:8000/api/users/${userId}`, {
+        method: 'DELETE',
+      })
+      if (response.ok){
+        setUsers(users.filter(user => user.id !== userId))
+      } else {
+        console.log('Error deleting user')
+      }
+    }
+    catch (error) {
+      console.log("Error deleting user: ", error);
+    }
+  }
+  
   return (
     <Container className='d-flex justify-content-around'>
-      <ClientsList usersArray={users}></ClientsList>
-      <AdminsList usersArray={users}></AdminsList>
-      <AddNewAdmin usersArray={users}></AddNewAdmin>
+      <ClientsList usersArray={users} onDeleteUser={handleDeleteUser} />
+      <AdminsList usersArray={users} onDeleteUser={handleDeleteUser} />
+      <AddNewAdmin usersArray={users}/>
     </Container>
   )
 }
