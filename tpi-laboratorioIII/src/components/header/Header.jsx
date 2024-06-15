@@ -12,9 +12,11 @@ import { AuthenticationContext } from '../../services/authentication/Authenticat
 
 const Header = () => {
   const navigate = useNavigate();
-  // const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
-  // const isSuperAdmin = () => user.role === "super-admin";
-  // const isClient = () => user.role === "client"
+
+  const {user} = useContext(AuthenticationContext)
+  const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
+  const isSuperAdmin = () => user.role === "super-admin";
+  const isClient = () => user.role === "client" || user.role === 'super-admin';
 
   const { handleLogout } = useContext(AuthenticationContext)
 
@@ -56,8 +58,8 @@ const Header = () => {
 
 
   return (
-    <div>
-      <Container fluid="ml" >
+    <div  >
+      <Container fluid="ml"  >
         <Row >
           <Col sm={1}></Col>
           <Col sm={10}>
@@ -71,25 +73,24 @@ const Header = () => {
                   className="d-inline-block align-top"
                   alt="React Bootstrap logo"
                 />
-                {/* PARA AGREGAR UNA IMG SI SE ENCUENTRA UNA PARA EL LOGO */}
-                {/* <h3>
-                  <Badge bg="success">Pizzeria 👍</Badge>
-                </h3> */}
+                
               </Navbar.Brand>
               <Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleHomeNavigation} >Home</Nav.Link>
-
               </Nav.Item>
-              <Nav.Item className='Nav-Seccion'>
+
+              {isSuperAdmin() && (<Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleAdminUserNavigation}>Admin Users</Nav.Link>
-              </Nav.Item>
+              </Nav.Item>)}
 
-              <Nav.Item className='Nav-Seccion'>
+              {isAdmin() &&(<Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleAddProductNavigation}>Add Product</Nav.Link>
-              </Nav.Item>
-              <Nav.Item className='Nav-Seccion'>
+              </Nav.Item>)}
+
+              {isClient() && (<Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleOrderNavigation}>Order</Nav.Link>
-              </Nav.Item>
+              </Nav.Item>)}
+
               <Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleProductsNavigation}>Products</Nav.Link>
               </Nav.Item>

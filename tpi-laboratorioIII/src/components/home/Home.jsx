@@ -9,7 +9,7 @@ import './Home.css';
 const Home = () => {
     return (
         <Container fluid className="home-container">
-            <Row className="justify-content-center align-items-center min-vh-100 bg-dark text-light text-center">
+            <Row className="justify-content-center align-items-center min-vh-100 min-vw-100 bg-dark text-light text-center">
                 <Col md={8} lg={6}>
                     <Card className="bg-transparent border-0">
                         <Card.Body>

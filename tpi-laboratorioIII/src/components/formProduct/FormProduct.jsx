@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
 import PropTypes from "prop-types";
+import { Container } from 'react-bootstrap';
 
 //Se agrega a una variable globla que contiene toda la lista de productos.
 //no se si iria onProductDataSaved() o va directamente a la varable global. 
@@ -104,7 +105,7 @@ const FormProduct = () => {
     /* --------------------- */
 
     return (
-        <>
+        <Container className='min-vh-100 min-vw-100'>
             <Row><Col>
                 <h1 style={{ textAlign: 'center' }}>
                     <Badge bg="danger">New Product</Badge>
@@ -189,7 +190,7 @@ const FormProduct = () => {
                     </Form>
                 </Col>
             </Row >
-        </>
+        </Container>
     )
 }
 

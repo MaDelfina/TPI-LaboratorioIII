@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Accordion, Image, Button } from 'react-bootstrap';
+import { Accordion, Image, Button, Container } from 'react-bootstrap';
 import PropTypes from "prop-types";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
@@ -24,7 +24,7 @@ const ShoppingCart = () => {
     }, [])
 
     return (
-        <>
+        <Container className='min-vh-100 min-vw-100'>
             <Accordion>
                 {cart.map((product, index) => (
                     <Accordion.Item key={index} eventKey={index.toString()}>
@@ -38,7 +38,7 @@ const ShoppingCart = () => {
                     </Accordion.Item>
                 ))}
             </Accordion>
-        </>
+        </Container>
     )
 }
 

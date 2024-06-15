@@ -28,8 +28,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <AdminUsers></AdminUsers>
-            {/* <AdminUser/> todabia no existe */}
+            <AdminUsers/>
           </MainLayout>
         </Protected>
       ),
