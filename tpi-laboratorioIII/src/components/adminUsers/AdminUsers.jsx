@@ -3,7 +3,6 @@ import { Container } from 'react-bootstrap'
 import ClientsList from '../clientsList/ClientsList'
 import AdminsList from '../adminsList/AdminsList'
 import AddNewAdmin from '../addNewAdmin/AddNewAdmin'
-
 const AdminUsers = () => {
   const [users, setUsers] = useState([])
 
@@ -35,13 +34,15 @@ const AdminUsers = () => {
       console.log("Error deleting user: ", error);
     }
   }
-  
-  return (
-    <Container className='d-flex justify-content-around'>
+  // min-vh-100 Altura
+  // min-vw-100 ancho
+  return (      
+    <Container className='d-flex justify-content-center min-vh-100 min-vw-100' >
       <ClientsList usersArray={users} onDeleteUser={handleDeleteUser} />
       <AdminsList usersArray={users} onDeleteUser={handleDeleteUser} />
       <AddNewAdmin usersArray={users}/>
     </Container>
+    
   )
 }
 

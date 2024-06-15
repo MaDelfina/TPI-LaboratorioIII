@@ -79,7 +79,7 @@ const ListProduct = () => {
   
   return (
     <>
-      <Container fluid='md'>
+      <Container fluid='md' className='min-vh-100 min-vw-100'>
         <Search onSearch={searchHandler} />
         <Row>
           <Col md={3}></Col>
