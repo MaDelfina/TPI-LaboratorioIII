@@ -94,9 +94,9 @@ const Header = () => {
               <Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleProductsNavigation}>Products</Nav.Link>
               </Nav.Item>
-              <Nav.Item className='Nav-Seccion'>
+              {/* <Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='nav-link' onClick={handleLoginNavigation}>Login</Nav.Link>
-              </Nav.Item>
+              </Nav.Item> */}
               <Nav.Item className='Nav-Seccion'>
                 <Nav.Link href='' className='button-link' onClick={handleLogoutButton}>Cerrar sesión</Nav.Link>
               </Nav.Item>
