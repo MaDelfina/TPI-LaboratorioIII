@@ -10,6 +10,7 @@ import Home from "./components/home/Home"
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Dashboard from './components/dashboard/Dashboard'
 import Protected from './components/routes/protected/Protected'
+import NotFound from './components/notFound/NotFound'
 
 function App() {
   const router = createBrowserRouter([
@@ -80,8 +81,7 @@ function App() {
     {
       path: '/*',
       element: (
-        <MainLayout />
-        // <NotFound/> no existe todavia
+          <NotFound/>        
       ),
     },
 
