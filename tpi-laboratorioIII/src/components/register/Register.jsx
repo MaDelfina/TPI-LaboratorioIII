@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
+import {useNavigate} from 'react-router-dom'
+import { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
-import { USERS } from "../data/Data";
-import { useRef } from 'react';
 import './Register.css'
-import {useNavigate} from 'react-router-dom'
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -32,11 +31,22 @@ function Register() {
         setPassword2(event.target.value)
     }
 
-    const buttonRegister = (event) => {
+    const userExists = async (email, password) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/users`);
+            const users = await response.json();
+            return users.some(user => user.username === email && user.password === password);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            return false;
+        }
+    };
+
+    const buttonRegister = async (event) => {
         event.preventDefault();
 
         if (!email || !password1 || !password2) {
-            setcompleteFields(true); //Mostrar la alerta si algún campo está vacío
+            setcompleteFields(true);
             if (!email){
                 emailRef.current.focus()
             } else if (!password1){
@@ -53,25 +63,36 @@ function Register() {
             return;
         }
 
-        const userExist = USERS.some((user) => user.username === email && user.password === password1)
-        if (userExist) {
+        if (await userExists(email, password1)) {
             setExistingUser(true);
             return;
         }
 
         const newClient = {
-            id: USERS.length + 1,
             username: email,
             password: password1,
             shopping_carg: [],
             rol: "client"
         }
 
-        setCorrectRegister(true);
+        try {
+            const response = await fetch(`http://localhost:8000/api/users`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',},
+                body: JSON.stringify(newClient),
+            });
 
-        USERS.push(newClient);
-        console.log('Nuevo cliente agregado:', newClient);
-        console.log("clientes: ", USERS);
+            if (response.ok) {
+                setCorrectRegister(true);
+                console.log('Nuevo cliente agregado:', newClient);
+            } else if (response.status === 409) {
+                setExistingUser(true);
+            } else {
+                console.log('Error al registrar el usuario');
+            }
+        } catch (error) {
+            console.log("Error al registrar el usuario: ", error);
+        }
     }
 
     const loginButtonHandler = () =>{
@@ -86,12 +107,12 @@ function Register() {
                     <Form.Control type="user" placeholder="Nombre de usuario" value={email} ref={emailRef} onChange={handlerEmail} />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3" controlId="formBasicPassword1">
                     <Form.Label>Contraseña</Form.Label>
                     <Form.Control type="password" placeholder="Password" value={password1} ref={password1Ref} onChange={handlerPassword1} />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3" controlId="formBasicPassword2">
                     <Form.Label>Confirmar contraseña</Form.Label>
                     <Form.Control type="password" placeholder="confirmar contraseña" value={password2} ref={password2Ref} onChange={handlerPassword2} />
                 </Form.Group>
