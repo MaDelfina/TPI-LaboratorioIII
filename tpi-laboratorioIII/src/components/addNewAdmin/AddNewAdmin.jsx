@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './AddNewAdmin.css'
 import { Badge, Button, Container, Form, Alert, Card } from 'react-bootstrap'
 
-const AddNewAdmin = ({ usersArray }) => {
+const AddNewAdmin = ({ usersArray, onAddAdmin }) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const usernameRef = useRef(null)
@@ -13,7 +13,7 @@ const AddNewAdmin = ({ usersArray }) => {
         exists: false,
     })
     const [showForm, setShowForm] = useState(false)
-
+    
     const usernameHandler = (event) => {
         setErrors({ ...errors, username: false })
         setUsername(event.target.value)
@@ -28,9 +28,9 @@ const AddNewAdmin = ({ usersArray }) => {
         setShowForm(!showForm)
     }
 
-    const submitUserHandler = (event) => {
+    const submitUserHandler = async (event) => {
         event.preventDefault()
-        setErrors({ ...errors, exists: false })
+        setErrors({ ...errors, exists: false, username: false, password: false })
 
         if (username.length === 0) {
             usernameRef.current.focus()
@@ -51,10 +51,38 @@ const AddNewAdmin = ({ usersArray }) => {
             return
         }
 
+        await addNewAdminUser();
         setUsername('')
         setPassword('')
     }
 
+    const addNewAdminUser = async () => { 
+        const newAdmin = {
+            username,
+            password,
+            rol: 'admin',
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8000/api/users`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',},
+                body: JSON.stringify(newAdmin),
+            });
+
+            if (response.ok) {
+                console.log('Nuevo administrador agregado:', newAdmin);
+                onAddAdmin(newAdmin)
+            } else if (response.status === 409) {
+                setErrors({ ...errors, exists: true });
+            } else {
+                console.log('Error al agregar un administrador');
+            }
+        } catch (error) {
+            console.log("Error al agregar un administrador: ", error);
+        }
+    }
+    
     return (
         <div>
             <Button variant='secondary' onClick={showFormHandler} className='mb-2'>
