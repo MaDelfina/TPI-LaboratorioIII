@@ -27,6 +27,9 @@ const ListProduct = () => {
 
 
   /* Llama a la api */
+  //!!! https://pizzeria-fake-api-nodejs.onrender.com Servidor
+  //http://localhost:8000/api/products ¡fake api vieja!
+
 
   //? Llama a todos los productos que hay en la API y los guarda con setProducts().
   useEffect(() => {
@@ -35,7 +38,7 @@ const ListProduct = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/products", {
+      const response = await fetch("https://pizzeria-fake-api-nodejs.onrender.com/api/products", {
         method: "GET",
         mode: "cors",
       });
