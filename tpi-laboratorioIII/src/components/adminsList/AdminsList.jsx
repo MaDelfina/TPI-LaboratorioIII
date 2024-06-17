@@ -9,8 +9,8 @@ const AdminsList = ({usersArray, onDeleteUser}) => {
         <Container style={{width: '400px', padding: "15px"}}>
             <h4>Administrators</h4>
             <ListGroup>
-                {filteredAdmins.map((user) => (
-                    <EachAdmin key={user.id} name={user.username} onDelete={onDeleteUser} id={user.id} />
+                {filteredAdmins.map((user, index) => (
+                    <EachAdmin key={index} name={user.username} onDelete={onDeleteUser} id={user.id} />
                 ))}
             </ListGroup>
         </Container>
