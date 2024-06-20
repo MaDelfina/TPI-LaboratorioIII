@@ -8,10 +8,12 @@ import { AuthenticationContext } from '../../services/authentication/Authenticat
 
 const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) => {
 
-  const {user} = useContext(AuthenticationContext)
+  const { user } = useContext(AuthenticationContext)
   const [userInfo, setUserInfo] = useState({})
+  const [cart, setCart] = useState([])
+  const [productUnits, setProductUnits] = useState(1)
   const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
-  
+
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${user.id}`, {
       headers: {
@@ -21,6 +23,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
       .then((response) => response.json())
       .then((data) => {
         setUserInfo(data)
+        setCart(data.shopping_cart)
       })
       .catch((error) => console.log(error))
   }, [])
@@ -46,16 +49,26 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
   }
 
   const HandleAddToShoppingCart = async () => {
+    const units = productUnits
     const product = {
-      name, description, price, imgUrl, id 
+      id, name, description, price, imgUrl, units
     };
 
     try {
+      const productInCartIndex = cart.findIndex((p) => p.id === product.id)
+      let cartUpdated;
+
+      if (productInCartIndex >= 0) {
+        cartUpdated = [...cart];
+        cartUpdated[productInCartIndex].units += product.units;
+      } else {
+        cartUpdated = [...cart, product];
+      }
+
       const userUpdated = {
         ...userInfo,
-        shopping_cart: [...userInfo.shopping_cart, product],
+        shopping_cart: cartUpdated,
       }
-      console.log(userUpdated)
 
       const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
         method: "PUT",
@@ -67,12 +80,23 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
         throw new Error("Failed to add new product");
       }
       const data = await response.json()
+      setUserInfo(data)
+      setCart(data.shopping_cart)
       console.log("added products to cart")
-      console.log(data)
     }
     catch (error) {
       console.error("Error:", error);
     };
+  }
+
+  const handleDecreaseUnits = () => {
+    if (productUnits > 1) {
+      setProductUnits(productUnits - 1)
+    }
+  }
+
+  const handleIncreaseUnits = () => {
+    setProductUnits(productUnits + 1)
   }
 
   return (
@@ -82,8 +106,13 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
         <Accordion.Body >
           <Image src={imgUrl} rounded /> <br />
           {description} <br /><hr />
+
+          <Button variant='light' style={{ borderColor: 'black' }} onClick={handleDecreaseUnits}>-</Button>
+          <span style={{ marginRight: '5px', marginLeft: '5px' }}>{productUnits}</span>
+          <Button variant='light' style={{ borderColor: 'black', marginRight: "1.5rem" }} onClick={handleIncreaseUnits}>+</Button>
+
           <Button variant='success' style={{ marginRight: "1.5rem" }} onClick={HandleAddToShoppingCart}>Agregar al carrito</Button>
-          
+
           {isAdmin() && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
 
         </Accordion.Body>
