@@ -19,7 +19,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <Home/>
+            <Home />
           </MainLayout>
         </Protected>
       ),
@@ -29,7 +29,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <AdminUsers/>
+            <AdminUsers />
           </MainLayout>
         </Protected>
       ),
@@ -39,7 +39,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-              <FormProduct />
+            <FormProduct />
           </MainLayout>
         </Protected>
       ),
@@ -49,9 +49,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-            <Dashboard>
-              <ShoppingCart/>
-            </Dashboard>
+            <ShoppingCart />
           </MainLayout>
         </Protected>
       ),
@@ -61,7 +59,7 @@ function App() {
       element: (
         <Protected>
           <MainLayout>
-              <ListProduct />
+            <ListProduct />
           </MainLayout>
         </Protected>
       ),
@@ -81,7 +79,7 @@ function App() {
     {
       path: '/*',
       element: (
-          <NotFound/>        
+        <NotFound />
       ),
     },
 

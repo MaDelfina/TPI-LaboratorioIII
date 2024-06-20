@@ -1,11 +1,10 @@
-import { useContext, useRef, useState, useEffect } from 'react'
+import { useContext, useRef, useState } from 'react'
 import './Login.css'
-import { Form, Button, Alert, Container} from 'react-bootstrap'
-import {useNavigate} from 'react-router-dom'
+import { Form, Button, Alert, Container } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 const Login = () => {
-  const [users, setUsers] = useState([])
   const [enteredUser, setEnteredUser] = useState('')
   const [enteredPass, setEnteredPass] = useState('')
   const usernameRef = useRef(null)
@@ -17,81 +16,62 @@ const Login = () => {
   })
   const navigate = useNavigate()
 
-  const {handleLogin} = useContext(AuthenticationContext)
-
-  useEffect(() => {
-    fetch("http://localhost:8000/api/users", {
-      headers: {
-        accept: "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data)
-      })
-      .catch((error) => console.log(error))
-  }, []) 
+  const { handleLogin } = useContext(AuthenticationContext)
 
   const usernameHandler = (event) => {
-    setErrors({...errors, username: false})
+    setErrors({ ...errors, username: false })
     setEnteredUser(event.target.value)
   }
 
   const passwordHandler = (event) => {
-    setErrors({...errors, password: false})
+    setErrors({ ...errors, password: false })
     setEnteredPass(event.target.value)
   }
 
-  const foundUser = users.find((u) => u.username === enteredUser && u.password === enteredPass)
-
   const loginHandler = async (event) => {
     event.preventDefault()
-    setErrors({...errors, exists: false})
+    setErrors({ ...errors, exists: false })
 
-    if(enteredUser.length === 0){
+    if (enteredUser.length === 0) {
       usernameRef.current.focus()
-      setErrors({...errors, username: true})
+      setErrors({ ...errors, username: true })
       return
     }
 
-    if(enteredPass.length === 0){
+    if (enteredPass.length === 0) {
       passwordRef.current.focus()
-      setErrors({...errors, password: true})
+      setErrors({ ...errors, password: true })
       return
     }
 
-    /*
     try {
       const response = await fetch('http://localhost:8000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          username: enteredUser,
+          password: enteredPass
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error('Usuario o contraseña incorrectos');
-      }
-
       const data = await response.json();
-      console.log('Login successful', data);
-      // Guardar el token en el almacenamiento local o en el estado de la aplicación
-      localStorage.setItem('token', data.token);
-    } catch (err) {
-      console.error('Login failed', err);
-    } */
 
-    if(foundUser){
-      handleLogin(enteredUser, foundUser.rol, foundUser.id)
-    } else {
-      setErrors({ ...errors, exists: true })
-      setEnteredUser('')
-      setEnteredPass('')
-      return
+      if (response.ok) {
+        console.log('Login successful');
+        handleLogin(enteredUser, data.rol, data.id)
+        navigate('/')
+      } else {
+        console.log('Invalid username or password');
+        setErrors({ ...errors, exists: true })
+        setEnteredUser('')
+        setEnteredPass('')
+        return
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred. Please try again.', error);
     }
-    
-    navigate('/')
 
     setEnteredUser('')
     setEnteredPass('')
@@ -106,25 +86,25 @@ const Login = () => {
       <Form className='form-login' onSubmit={loginHandler}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
-          <Form.Control 
-          ref={usernameRef} 
-          value={enteredUser} 
-          type='text' 
-          placeholder='Nombre de usuario' 
-          onChange={usernameHandler}
-          className={errors.username && "border border-danger"}>
+          <Form.Control
+            ref={usernameRef}
+            value={enteredUser}
+            type='text'
+            placeholder='Nombre de usuario'
+            onChange={usernameHandler}
+            className={errors.username && "border border-danger"}>
 
           </Form.Control>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
-          <Form.Control 
-          ref={passwordRef} 
-          value={enteredPass} 
-          type='password' 
-          placeholder='Contraseña' 
-          onChange={passwordHandler}
-          className={errors.password && "border border-danger"}>
+          <Form.Control
+            ref={passwordRef}
+            value={enteredPass}
+            type='password'
+            placeholder='Contraseña'
+            onChange={passwordHandler}
+            className={errors.password && "border border-danger"}>
 
           </Form.Control>
         </Form.Group>
