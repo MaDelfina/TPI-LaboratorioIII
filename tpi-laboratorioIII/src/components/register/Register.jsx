@@ -117,11 +117,11 @@ function Register() {
                     <Form.Control type="password" placeholder="confirmar contraseña" value={password2} ref={password2Ref} onChange={handlerPassword2} />
                 </Form.Group>
 
-                <Button variant="outline-secondary" type="submit">
+                <Button variant="outline-primary" type="submit">
                     Registrarme
                 </Button>
                 <hr />
-                <Button variant="outline-secondary" type="submit" onClick={loginButtonHandler}>
+                <Button variant="outline-primary" type="submit" onClick={loginButtonHandler}>
                     Iniciar sesion
                 </Button>
 

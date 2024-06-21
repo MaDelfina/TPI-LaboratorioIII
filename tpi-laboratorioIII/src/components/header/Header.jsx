@@ -60,9 +60,7 @@ const Header = () => {
   return (
     <div  >
       <Container fluid="ml"  >
-        <Row >
-          <Col sm={1}></Col>
-          <Col sm={10}>
+        
             <Nav className='Nav-Bar' justify defaultActiveKey={""} bg="dark" data-bs-theme="dark">
               <Navbar.Brand href="" onClick={handleHomeNavigation}>
                 <img
@@ -101,8 +99,7 @@ const Header = () => {
                 <Nav.Link href='' className='button-link' onClick={handleLogoutButton}>Cerrar sesión</Nav.Link>
               </Nav.Item>
             </Nav >
-          </Col>
-        </Row>
+        
       </Container>
     </div>
   )

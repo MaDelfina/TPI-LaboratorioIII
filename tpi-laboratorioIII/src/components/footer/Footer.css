@@ -1,15 +1,11 @@
 .footer {
     width: 100%;
-    background-color: #8a8a8aad;
-    color: white;
+    background-color:  #bee7cc;
+    color: #ffff;
     padding: 20px 0;
 }
 
 .footer a {
-    color: white;
+    color: #ffff;
     text-decoration: none;
-}
-
-.row {
-    margin: 10px;
 }
