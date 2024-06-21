@@ -83,6 +83,9 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
       setUserInfo(data)
       setCart(data.shopping_cart)
       console.log("added products to cart")
+      console.log(data)
+      //Prueba; cart siempre esta vacia.
+      console.log(cart);
     }
     catch (error) {
       console.error("Error:", error);
