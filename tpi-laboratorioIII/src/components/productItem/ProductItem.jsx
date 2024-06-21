@@ -26,7 +26,8 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
         setCart(data.shopping_cart)
       })
       .catch((error) => console.log(error))
-  }, [])
+      //?Cada vez que se se modifique cart se vuelve a cargar el usuario. 
+  }, [cart])
   /* Llamada a la api */
   //? Elimina los productos por id
   const deleteProducts = async () => {
@@ -83,6 +84,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
       setUserInfo(data)
       setCart(data.shopping_cart)
       console.log("added products to cart")
+      //datos que llegan de la fake api. 
       console.log(data)
       //Prueba; cart siempre esta vacia.
       console.log(cart);
