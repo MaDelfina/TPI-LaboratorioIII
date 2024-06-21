@@ -4,19 +4,25 @@
 
 .nav-link:hover{
     color: #dd4d4d;
-   
 }
 
 .Nav-Bar{
     background-color: #bee7cc;
-    margin-bottom: 10px; /* es para que no este pegado al componente de abajo */
-    
-
-    
+   /*margin-bottom: 10px;  es para que no este pegado al componente de abajo */
+    padding-top: 15px;
 }
+
+.nav-link{
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
 .Nav-Seccion:hover{
     background-color:#99d2ac;
     transition: background-color 0.9s ease, color 1.0s ease; 
+    display: flex;
+    justify-content: center;
     /*para que no cambie de golpe el color, no se si funciona bien.*/
 }
 
