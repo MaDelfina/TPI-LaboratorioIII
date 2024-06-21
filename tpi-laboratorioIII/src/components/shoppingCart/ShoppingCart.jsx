@@ -111,39 +111,42 @@ const ShoppingCart = () => {
 
     return (
         <>
-            {cart.length > 0 ? (
-                <Container fluid='md' className='min-vh-100 min-vw-100'>
-                    <Row>
-                        <Col md={3}></Col>
-                        <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
-                            <Accordion style={{ width: '30rem' }}>
-                                {cart.map((product) => (
-                                    <ShoppingCartItem
-                                        key={product.id}
-                                        name={product.name}
-                                        price={product.price}
-                                        imgUrl={product.imgUrl}
-                                        description={product.description}
-                                        id={product.id}
-                                        onDeletedProduct={deleteCartProduct}
-                                        units={product.units}>
-                                    </ShoppingCartItem>
-                                ))}
-                            </Accordion>
-                        </Col>
-                        <Col md={3}>
-                            <div>Total: ${totalPrice}</div>
-                            <Button variant="success" className="mt-3" onClick={handleBuyProducts}>Comprar</Button>
-                        </Col>
-                    </Row>
-                </Container>
-            ) : (
-                <Alert>No se agregaron productos al carrito</Alert>
-            )}
-        </>
+            <Container fluid='md' className='min-vh-100 min-vw-100'>
 
-    )
+                {cart.length > 0 ? (
+                    <Container fluid='md' className='min-vh-100 min-vw-100'>
+                        <Row>
+                            <Col md={3}></Col>
+                            <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
+                                <Accordion style={{ width: '30rem' }}>
+                                    {cart.map((product) => (
+                                        <ShoppingCartItem
+                                            key={product.id}
+                                            name={product.name}
+                                            price={product.price}
+                                            imgUrl={product.imgUrl}
+                                            description={product.description}
+                                            id={product.id}
+                                            onDeletedProduct={deleteCartProduct}
+                                            units={product.units}>
+                                        </ShoppingCartItem>
+                                    ))}
+                                </Accordion>
+                            </Col>
+                            <Col md={3}>
+                                <div>Total: ${totalPrice}</div>
+                                <Button variant="success" className="mt-3" onClick={handleBuyProducts}>Comprar</Button>
+                            </Col>
+                        </Row>
+                    </Container>
+                ) : (
+                    <Alert>No se agregaron productos al carrito</Alert>
+                )}
+            </Container>
+            </>
+
+            )
 }
 
 
-export default ShoppingCart
+            export default ShoppingCart
