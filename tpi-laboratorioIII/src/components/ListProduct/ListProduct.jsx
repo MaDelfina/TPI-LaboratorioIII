@@ -8,26 +8,24 @@ import Col from 'react-bootstrap/Col';
 import ProductItem from '../productItem/ProductItem';
 import Search from "../search/Search"
 import './listProduct.css';
+import Spiner from '../../spiner/Spiner';
 
 
 const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState([]);
   const [error, setError] = useState('');
-
-
-
-  // const [loading, setLoading] = useState('ture'); //Spiner
+  const [loading, setLoading] = useState('ture'); //Spiner
   useEffect(() => {
     if (filterPizzas.length > 0) {
       setFilterPizzas(filterPizzas);
-      // setLoading(false); Hay que crear un spiner para que se muestre mientras se cargan las pizzas.
+      setLoading(false); //Hay que crear un spiner para que se muestre mientras se cargan las pizzas.
     }
   }, [filterPizzas]);
 
 
 
   /* Llama a la api */
-  //!!! https://pizzeria-fake-api-nodejs.onrender.com Servidor
+  //!!! ... Servidor
   //http://localhost:8000/api/products ¡fake api vieja!
 
 
@@ -38,7 +36,7 @@ const ListProduct = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("https://pizzeria-fake-api-nodejs.onrender.com/api/products", {
+      const response = await fetch("http://localhost:8000/api/products", {
         method: "GET",
         mode: "cors",
       });
@@ -47,6 +45,7 @@ const ListProduct = () => {
       }
       const ProductsData = await response.json();
       setFilterPizzas(ProductsData);
+      setLoading(false);//desactiva el spiner
     }
     catch (error) {
       console.error("Error:", error);
@@ -79,9 +78,13 @@ const ListProduct = () => {
       }
     }
   }
-  
+
   return (
-    <>
+    <>{loading ? (
+      <Container fluid='md' className='min-vh-100 min-vw-100' >
+        <Spiner />
+      </Container>
+    ):(
       <Container fluid='md' className='min-vh-100 min-vw-100'>
         <Search onSearch={searchHandler} />
         <Row>
@@ -106,7 +109,7 @@ const ListProduct = () => {
                   stock={pizza.stock}
                   onFetchProducts={fetchProducts}
 
-                  // addToCart={addToCart}
+                // addToCart={addToCart}
                 />
               ))}
             </Accordion>
@@ -114,6 +117,7 @@ const ListProduct = () => {
           <Col md={3}></Col>
         </Row>
       </Container>
+)}
     </>
   );
 }

@@ -49,16 +49,14 @@ const FormProduct = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        if (enteredImageUrl === "") {
-            setEnteredImageUrl("https://i.postimg.cc/DwcbBxMf/pizza-Gato.jpg"); //! No agrega la imagen y no se porque.
-        }
+        const imageUrl = enteredImageUrl === "" ? "https://i.postimg.cc/mkkxk6h5/ivan-torres-MQUqbmsz-GGM-unsplash.jpg" : enteredImageUrl;
         const ProductDto = {
             id: 210,
             name: enteredName,
             description: enteredDescription,
             price: enteredStock !== "" ? parseInt(enteredStock, 10) : 0,
             stock: parseInt(enteredPrice, 10),
-            imageUrl: "https://i.postimg.cc/DwcbBxMf/pizza-Gato.jpg",
+            imageUrl: imageUrl,
         };
 
         salveProductHandler(ProductDto);

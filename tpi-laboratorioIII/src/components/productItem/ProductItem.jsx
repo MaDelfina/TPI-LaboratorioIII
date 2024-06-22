@@ -13,7 +13,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
   const [cart, setCart] = useState([])
   const [productUnits, setProductUnits] = useState(1)
   const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
-
+const [modifiedCart, setModifiedCart ] = useState(false)
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${user.id}`, {
       headers: {
@@ -27,7 +27,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
       })
       .catch((error) => console.log(error))
       //?Cada vez que se se modifique cart se vuelve a cargar el usuario. 
-  }, [cart])
+  }, [modifiedCart])
   /* Llamada a la api */
   //? Elimina los productos por id
   const deleteProducts = async () => {
@@ -88,6 +88,8 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) 
       console.log(data)
       //Prueba; cart siempre esta vacia.
       console.log(cart);
+      //Bandera
+      setModifiedCart();
     }
     catch (error) {
       console.error("Error:", error);
