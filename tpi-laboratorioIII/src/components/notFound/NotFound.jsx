@@ -1,10 +1,10 @@
 import React from 'react'
-import { Badge } from 'react-bootstrap'
+import { Badge, Container } from 'react-bootstrap'
 
 const NotFound = () => {
     
     return (
-        <div style={{backgroundColor: '#fcfcfc', height:'50vh', width:'50vw'}}>
+        <Container fluid='md' style={{backgroundColor: '#fcfcfc', height:'100vh', width:'100vw'}}>
             <h1> Page: <Badge bg="secondary" > Not Found</Badge></h1>
             <img
                 src="https://i.postimg.cc/sgYxQyfz/not-Found-Pizzeria.jpg"
@@ -13,7 +13,7 @@ const NotFound = () => {
                 className="d-inline-block align-top"
                 alt="React Bootstrap logo"
             />
-        </div>
+        </Container>
     )
 }
 
