@@ -5,14 +5,15 @@ import PropTypes from 'prop-types';
 import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
-
+import useValidateUser from '../hookCustom/useValidateUser';
 const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) => {
 
   const { user } = useContext(AuthenticationContext)
   const [userInfo, setUserInfo] = useState({})
   const [cart, setCart] = useState([])
   const [productUnits, setProductUnits] = useState(1)
-  const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
+  const {isAdmin, isSuperAdmin, isClient} = useValidateUser();
+  //const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
 const [modifiedCart, setModifiedCart ] = useState(false)
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${user.id}`, {
