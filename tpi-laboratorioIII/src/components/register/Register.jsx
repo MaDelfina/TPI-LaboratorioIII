@@ -10,6 +10,7 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const [completeFields, setcompleteFields] = useState(false);
     const [differentPassword, setDifferentPassword] = useState(false);
     const [correctRegister, setCorrectRegister] = useState(false);
@@ -31,17 +32,6 @@ function Register() {
         setPassword2(event.target.value)
     }
 
-    const userExists = async (email, password) => {
-        try {
-            const response = await fetch(`http://localhost:8000/api/users`);
-            const users = await response.json();
-            return users.some(user => user.username === email && user.password === password);
-        } catch (error) {
-            console.error("Error fetching users:", error);
-            return false;
-        }
-    };
-
     const buttonRegister = async (event) => {
         event.preventDefault();
 
@@ -51,8 +41,7 @@ function Register() {
                 emailRef.current.focus()
             } else if (!password1){
                 password1Ref.current.focus();
-            }
-            else if (!password2){
+            } else if (!password2){
                 password2Ref.current.focus();
             }
             return;
@@ -63,20 +52,15 @@ function Register() {
             return;
         }
 
-        if (await userExists(email, password1)) {
-            setExistingUser(true);
-            return;
-        }
-
         const newClient = {
             username: email,
             password: password1,
-            shopping_carg: [],
+            shopping_cart: [],
             rol: "client"
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/users`, {
+            const response = await fetch(`http://localhost:8000/register`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify(newClient),
@@ -84,14 +68,20 @@ function Register() {
 
             if (response.ok) {
                 setCorrectRegister(true);
+                setErrorMessage("");
+                setExistingUser(false);
                 console.log('Nuevo cliente agregado:', newClient);
-            } else if (response.status === 409) {
-                setExistingUser(true);
             } else {
-                console.log('Error al registrar el usuario');
-            }
+                const data = await response.json();
+                if (response.status === 400){
+                    setErrorMessage(data.message);
+                    setExistingUser(true);
+                } else {
+                    setErrorMessage("Error al registrar el usuario: " + error.message);
+                }
+            } 
         } catch (error) {
-            console.log("Error al registrar el usuario: ", error);
+            setErrorMessage("Error al registrar el usuario: " + error.message);
         }
     }
 
@@ -145,7 +135,7 @@ function Register() {
 
                 {existingUser && (
                     <Alert variant='danger' onClose={() => setExistingUser(false)} dismissible>
-                        !Usuario ya existete!
+                        {errorMessage}
                     </Alert>
                 )}
             </Form>
