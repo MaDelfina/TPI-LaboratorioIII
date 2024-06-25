@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
+import useValidateUser from '../hookCustom/useValidateUser';
 
 const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, onAddedProductToCart }) => {
 
   const { user } = useContext(AuthenticationContext)
   const [productUnits, setProductUnits] = useState(1)
-  const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
+  const {isAdmin, isSuperAdmin, isClient} = useValidateUser();
+  //const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
 
   /* Llamada a la api */
   //? Elimina los productos por id
@@ -81,7 +83,8 @@ ProductItem.propType = {
   price: PropTypes.string,
   imgUrl: PropTypes.string,
   id: PropTypes.number,
-  onFetchProducts: PropTypes.func
+  onFetchProducts: PropTypes.func,
+  onAddedProductToCart: PropTypes.func
 }
 
 export default ProductItem
