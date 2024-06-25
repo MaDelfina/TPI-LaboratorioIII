@@ -73,7 +73,7 @@ const AddNewAdmin = ({ usersArray, onAddAdmin }) => {
             if (response.ok) {
                 console.log('Nuevo administrador agregado:', newAdmin);
                 onAddAdmin(newAdmin)
-            } else if (response.status === 409) {
+            } else if (response.status === 400) {
                 setErrors({ ...errors, exists: true });
             } else {
                 console.log('Error al agregar un administrador');

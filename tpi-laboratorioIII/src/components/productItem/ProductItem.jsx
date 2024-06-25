@@ -1,33 +1,17 @@
 
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
 
-const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts }) => {
+const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, onAddedProductToCart }) => {
 
   const { user } = useContext(AuthenticationContext)
-  const [userInfo, setUserInfo] = useState({})
-  const [cart, setCart] = useState([])
   const [productUnits, setProductUnits] = useState(1)
   const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
-const [modifiedCart, setModifiedCart ] = useState(false)
-  useEffect(() => {
-    fetch(`http://localhost:8000/api/users/${user.id}`, {
-      headers: {
-        accept: "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUserInfo(data)
-        setCart(data.shopping_cart)
-      })
-      .catch((error) => console.log(error))
-      //?Cada vez que se se modifique cart se vuelve a cargar el usuario. 
-  }, [modifiedCart])
+
   /* Llamada a la api */
   //? Elimina los productos por id
   const deleteProducts = async () => {
@@ -49,51 +33,13 @@ const [modifiedCart, setModifiedCart ] = useState(false)
     }
   }
 
-  const HandleAddToShoppingCart = async () => {
+  const addToShoppingCart = () => {
     const units = productUnits
     const product = {
       id, name, description, price, imgUrl, units
     };
 
-    try {
-      const productInCartIndex = cart.findIndex((p) => p.id === product.id)
-      let cartUpdated;
-
-      if (productInCartIndex >= 0) {
-        cartUpdated = [...cart];
-        cartUpdated[productInCartIndex].units += product.units;
-      } else {
-        cartUpdated = [...cart, product];
-      }
-
-      const userUpdated = {
-        ...userInfo,
-        shopping_cart: cartUpdated,
-      }
-
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
-        method: "PUT",
-        mode: "cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userUpdated),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add new product");
-      }
-      const data = await response.json()
-      setUserInfo(data)
-      setCart(data.shopping_cart)
-      console.log("added products to cart")
-      //datos que llegan de la fake api. 
-      console.log(data)
-      //Prueba; cart siempre esta vacia.
-      console.log(cart);
-      //Bandera
-      setModifiedCart();
-    }
-    catch (error) {
-      console.error("Error:", error);
-    };
+    onAddedProductToCart(product)
   }
 
   const handleDecreaseUnits = () => {
@@ -118,7 +64,7 @@ const [modifiedCart, setModifiedCart ] = useState(false)
           <span style={{ marginRight: '5px', marginLeft: '5px' }}>{productUnits}</span>
           <Button variant='light' style={{ borderColor: 'black', marginRight: "1.5rem" }} onClick={handleIncreaseUnits}>+</Button>
 
-          <Button variant='success' style={{ marginRight: "1.5rem" }} onClick={HandleAddToShoppingCart}>Agregar al carrito</Button>
+          <Button variant='success' style={{ marginRight: "1.5rem" }} onClick={addToShoppingCart}>Agregar al carrito</Button>
 
           {isAdmin() && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
 
