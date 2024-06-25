@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Accordion, Container, Alert } from 'react-bootstrap';
-import PropTypes from "prop-types";
-
-// import { pizzas } from '../data/Data';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ProductItem from '../productItem/ProductItem';
 import Search from "../search/Search"
 import './listProduct.css';
 import Spiner from '../../spiner/Spiner';
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
 
 
 const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState('ture'); //Spiner
+  const { user } = useContext(AuthenticationContext)
+  const [userInfo, setUserInfo] = useState({})
+  const [cart, setCart] = useState([])
+
   useEffect(() => {
     if (filterPizzas.length > 0) {
       setFilterPizzas(filterPizzas);
@@ -22,7 +24,20 @@ const ListProduct = () => {
     }
   }, [filterPizzas]);
 
-
+  useEffect(() => {
+    fetch(`http://localhost:8000/api/users/${user.id}`, {
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUserInfo(data)
+        setCart(data.shopping_cart)
+      })
+      .catch((error) => console.log(error))
+    //?Cada vez que se se modifique cart se vuelve a cargar el usuario. 
+  }, [])
 
   /* Llama a la api */
   //!!! ... Servidor
@@ -79,6 +94,43 @@ const ListProduct = () => {
     }
   }
 
+  const HandleAddToShoppingCart = async (product) => {
+    try {
+      const productInCartIndex = cart.findIndex((p) => p.id === product.id)
+      let cartUpdated;
+
+      if (productInCartIndex >= 0) {
+        cartUpdated = [...cart];
+        cartUpdated[productInCartIndex].units += product.units;
+      } else {
+        cartUpdated = [...cart, product];
+      }
+
+      const userUpdated = {
+        ...userInfo,
+        shopping_cart: cartUpdated,
+      }
+
+      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
+        method: "PUT",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userUpdated),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add new product");
+      }
+      const data = await response.json()
+      setUserInfo(data)
+      setCart(data.shopping_cart)
+      console.log("added products to cart")
+      console.log(userInfo)
+    }
+    catch (error) {
+      console.error("Error:", error);
+    };
+  }
+
   return (
     <>{loading ? (
       <Container fluid='md' className='min-vh-100 min-vw-100' >
@@ -108,8 +160,8 @@ const ListProduct = () => {
                   id={pizza.id}
                   stock={pizza.stock}
                   onFetchProducts={fetchProducts}
+                  onAddedProductToCart={HandleAddToShoppingCart}
 
-                // addToCart={addToCart}
                 />
               ))}
             </Accordion>
