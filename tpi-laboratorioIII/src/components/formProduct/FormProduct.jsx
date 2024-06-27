@@ -54,8 +54,8 @@ const FormProduct = () => {
             id: 210,
             name: enteredName,
             description: enteredDescription,
-            price: enteredStock !== "" ? parseInt(enteredStock, 10) : 0,
-            stock: parseInt(enteredPrice, 10),
+            stock: enteredStock !== "" ? parseInt(enteredStock, 10) : 0,
+            price: parseInt(enteredPrice, 10),
             imageUrl: imageUrl,
         };
 
@@ -85,7 +85,7 @@ const FormProduct = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8000/api/products", {
+            const response = await fetch(`https://localhost:7044/api/Product/CreateProduct`, {
                 method: "POST",
                 mode: "cors",
                 headers: { "Content-Type": "application/json" },

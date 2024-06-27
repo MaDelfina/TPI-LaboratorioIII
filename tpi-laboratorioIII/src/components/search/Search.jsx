@@ -12,10 +12,6 @@ const Search = ({ onSearch }) => {
         onSearch(searchValue);
     }
 
-    const handleButtonClick = () => {
-        onSearch(search);
-    }
-
     return (
         <>
             <Row className="search">
@@ -29,9 +25,6 @@ const Search = ({ onSearch }) => {
                                     value={search}
                                     onChange={handleSearch}
                                 />
-                                <Button variant="outline-secondary" onClick={handleButtonClick}>
-                                    buscar
-                                </Button>
                             </InputGroup>
                         </Form.Group>
                     </Form>
