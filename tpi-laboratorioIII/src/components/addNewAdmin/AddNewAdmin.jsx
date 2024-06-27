@@ -13,7 +13,7 @@ const AddNewAdmin = ({ usersArray, onAddAdmin }) => {
         exists: false,
     })
     const [showForm, setShowForm] = useState(false)
-    
+
     const usernameHandler = (event) => {
         setErrors({ ...errors, username: false })
         setUsername(event.target.value)
@@ -56,33 +56,32 @@ const AddNewAdmin = ({ usersArray, onAddAdmin }) => {
         setPassword('')
     }
 
-    const addNewAdminUser = async () => { 
+    const addNewAdminUser = async () => {
         const newAdmin = {
             username,
-            password,
-            rol: 'admin',
+            password
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/users`, {
+            const response = await fetch(`https://localhost:7044/api/User/CreateAdmin`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json',},
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json', },
                 body: JSON.stringify(newAdmin),
             });
 
             if (response.ok) {
                 console.log('Nuevo administrador agregado:', newAdmin);
                 onAddAdmin(newAdmin)
-            } else if (response.status === 400) {
-                setErrors({ ...errors, exists: true });
             } else {
+                setErrors({ ...errors, exists: true });
                 console.log('Error al agregar un administrador');
             }
         } catch (error) {
             console.log("Error al agregar un administrador: ", error);
         }
     }
-    
+
     return (
         <div>
             <Button variant='secondary' onClick={showFormHandler} className='mb-2'>

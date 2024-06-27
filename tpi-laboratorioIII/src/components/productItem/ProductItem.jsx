@@ -19,7 +19,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
   const deleteProducts = async () => {
     const productDto = id
     try {
-      const response = await fetch(`http://localhost:8000/api/products/${productDto}`, {
+      const response = await fetch(`https://localhost:7044/api/Product/DeleteProdcut${productDto}`, {
         method: "DELETE",
         mode: "cors",
         headers: { "Content-Type": "application/json" },

@@ -45,8 +45,9 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/login', {
+      const response = await fetch('https://localhost:7044/api/User/login', {
         method: 'POST',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -71,6 +72,11 @@ const Login = () => {
       }
     } catch (error) {
       console.error('An unexpected error occurred. Please try again.', error);
+      console.log('Invalid username or password');
+      setErrors({ ...errors, exists: true })
+      setEnteredUser('')
+      setEnteredPass('')
+      return
     }
 
     setEnteredUser('')

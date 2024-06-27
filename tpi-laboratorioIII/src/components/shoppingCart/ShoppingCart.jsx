@@ -15,17 +15,17 @@ const ShoppingCart = () => {
     const { user } = useContext(AuthenticationContext)
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/users/${user.id}`, {
+        fetch(`https://localhost:7044/api/User/GetById${user.id}`, {
             method: "GET",
+            mode: 'cors',
             headers: {
                 accept: "application/json",
             },
         })
             .then((response) => response.json())
             .then((data) => {
-                const cartInfo = data.shopping_cart
                 setUserInfo(data)
-                setCart(cartInfo)
+                setCart(data.products)
             })
             .catch((error) => console.log(error))
     }, [])
@@ -119,9 +119,9 @@ const ShoppingCart = () => {
                             <Col md={3}></Col>
                             <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
                                 <Accordion style={{ width: '30rem' }}>
-                                    {cart.map((product) => (
+                                    {cart.map((product, index) => (
                                         <ShoppingCartItem
-                                            key={product.id}
+                                            key={index}
                                             name={product.name}
                                             price={product.price}
                                             imgUrl={product.imgUrl}

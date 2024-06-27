@@ -8,10 +8,11 @@ const AdminUsers = () => {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/users", {
+    fetch("https://localhost:7044/api/User/getAll", {
       headers: {
         accept: "application/json",
       },
+      mode: 'cors'
     })
       .then((response) => response.json())
       .then((data) => {
@@ -22,8 +23,9 @@ const AdminUsers = () => {
 
   const handleDeleteUser = async (userId) => {
     try{
-      const response = await fetch(`http://localhost:8000/api/users/${userId}`, {
+      const response = await fetch(`https://localhost:7044/api/User/DeleteId${userId}`, {
         method: 'DELETE',
+        mode: 'cors',
       })
       if (response.ok){
         setUsers(users.filter(user => user.id !== userId))

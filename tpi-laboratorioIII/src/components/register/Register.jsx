@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -37,11 +37,11 @@ function Register() {
 
         if (!email || !password1 || !password2) {
             setcompleteFields(true);
-            if (!email){
+            if (!email) {
                 emailRef.current.focus()
-            } else if (!password1){
+            } else if (!password1) {
                 password1Ref.current.focus();
-            } else if (!password2){
+            } else if (!password2) {
                 password2Ref.current.focus();
             }
             return;
@@ -54,15 +54,14 @@ function Register() {
 
         const newClient = {
             username: email,
-            password: password1,
-            shopping_cart: [],
-            rol: "client"
+            password: password1
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/register`, {
+            const response = await fetch(`https://localhost:7044/api/User/CreateClient`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json',},
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json', },
                 body: JSON.stringify(newClient),
             });
 
@@ -73,19 +72,17 @@ function Register() {
                 console.log('Nuevo cliente agregado:', newClient);
             } else {
                 const data = await response.json();
-                if (response.status === 400){
-                    setErrorMessage(data.message);
-                    setExistingUser(true);
-                } else {
-                    setErrorMessage("Error al registrar el usuario: " + error.message);
-                }
-            } 
+                setErrorMessage(data.message);
+                setExistingUser(true);
+                setErrorMessage("Error al registrar el usuario: " + error.message);
+
+            }
         } catch (error) {
             setErrorMessage("Error al registrar el usuario: " + error.message);
         }
     }
 
-    const loginButtonHandler = () =>{
+    const loginButtonHandler = () => {
         navigate("/login")
     }
 

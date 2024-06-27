@@ -11,11 +11,11 @@ import { AuthenticationContext } from '../../services/authentication/Authenticat
 
 const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState([]);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState('ture'); //Spiner
   const { user } = useContext(AuthenticationContext)
   const [userInfo, setUserInfo] = useState({})
   const [cart, setCart] = useState([])
+  const [text, setText] = useState('')
 
   useEffect(() => {
     if (filterPizzas.length > 0) {
@@ -25,19 +25,29 @@ const ListProduct = () => {
   }, [filterPizzas]);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/users/${user.id}`, {
+    fetch(`https://localhost:7044/api/User/GetById${user.id}`, {
+      method: "GET",
+      mode: "cors",
       headers: {
         accept: "application/json",
-      },
+      }
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error al obtener los productos");
+        }
+        return response.json();
+      })
       .then((data) => {
         setUserInfo(data)
-        setCart(data.shopping_cart)
+        setCart(data.products)
+        console.log(data.products)
       })
-      .catch((error) => console.log(error))
-    //?Cada vez que se se modifique cart se vuelve a cargar el usuario. 
-  }, [])
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+  
 
   /* Llama a la api */
   //!!! ... Servidor
@@ -49,9 +59,27 @@ const ListProduct = () => {
     fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
+  /*const fetchProducts = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/products", {
+        method: "GET",
+        mode: "cors",
+      });
+      if (!response.ok) {
+        throw new Error("Error in obtaining products");
+      }
+      const ProductsData = await response.json();
+      setFilterPizzas(ProductsData);
+      setLoading(false);//desactiva el spiner
+    }
+    catch (error) {
+      console.error("Error:", error);
+    };
+  }; */
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("https://localhost:7044/api/Product/GetAll", {
         method: "GET",
         mode: "cors",
       });
@@ -68,31 +96,6 @@ const ListProduct = () => {
   };
 
   /* ---------------- */
-
-
-  // Cuando apreto enter en el boton recarga la pagina 
-  const searchHandler = (search) => {
-    if (search.trim() === "") {
-
-      setFilterPizzas(filterPizzas);
-      setError('');
-
-    } else {
-
-      const filterProducts = filterPizzas.filter(
-        (pizza) =>
-          pizza.name.toLowerCase().includes(search.toLowerCase())
-      );
-
-      setFilterPizzas(filterProducts);
-
-      if (filterProducts.length > 0) {
-        setError('');
-      } else {
-        setError('Pizza no encontrada');
-      }
-    }
-  }
 
   const HandleAddToShoppingCart = async (product) => {
     try {
@@ -131,45 +134,51 @@ const ListProduct = () => {
     };
   }
 
+  const inputHandler = (inputText) => {
+    setText(inputText)
+  }
+
+  const pizzasSearched = filterPizzas.filter((p) => p.name.toLowerCase().includes(text.toLowerCase()))
+  
+  
+
   return (
     <>{loading ? (
       <Container fluid='md' className='min-vh-100 min-vw-100' >
         <Spiner />
       </Container>
-    ):(
+    ) : (
       <Container fluid='md' className='min-vh-100 min-vw-100'>
-        <Search onSearch={searchHandler} />
+        <Search onSearch={inputHandler} />
         <Row>
           <Col md={3}></Col>
 
           <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
-
-            {error &&
-              <Alert key="danger" variant="danger">
-                {error}
-              </Alert>
-            }
             <Accordion style={{ width: '30rem' }}>
-              {filterPizzas.map(pizza => (
-                <ProductItem
-                  key={pizza.id}
-                  name={pizza.name}
-                  description={pizza.description}
-                  price={pizza.price}
-                  imgUrl={pizza.imageUrl}
-                  id={pizza.id}
-                  stock={pizza.stock}
-                  onFetchProducts={fetchProducts}
-                  onAddedProductToCart={HandleAddToShoppingCart}
-
-                />
-              ))}
+              {pizzasSearched.length > 0 ? (
+                pizzasSearched.map(pizza => (
+                  <ProductItem
+                    key={pizza.id}
+                    name={pizza.name}
+                    description={pizza.description}
+                    price={pizza.price}
+                    imgUrl={pizza.imageUrl}
+                    id={pizza.id}
+                    stock={pizza.stock}
+                    onFetchProducts={fetchProducts}
+                    onAddedProductToCart={HandleAddToShoppingCart}
+  
+                  />
+                ))
+              ) : (
+                <Alert variant='danger'>Pizza no encontrada</Alert>
+              )}
             </Accordion>
           </Col>
           <Col md={3}></Col>
         </Row>
       </Container>
-)}
+    )}
     </>
   );
 }
