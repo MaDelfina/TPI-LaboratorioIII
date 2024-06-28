@@ -66,7 +66,9 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
           <span style={{ marginRight: '5px', marginLeft: '5px' }}>{productUnits}</span>
           <Button variant='light' style={{ borderColor: 'black', marginRight: "1.5rem" }} onClick={handleIncreaseUnits}>+</Button>
 
-          <Button variant='success' style={{ marginRight: "1.5rem" }} onClick={addToShoppingCart}>Agregar al carrito</Button>
+          {(isSuperAdmin() || isClient()) &&
+            (<Button variant='success' style={{ marginRight: "1.5rem" }} onClick={addToShoppingCart}>Agregar al carrito</Button>)
+          }
 
           {isAdmin() && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
 
