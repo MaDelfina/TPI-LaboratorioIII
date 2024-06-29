@@ -7,15 +7,20 @@ import './ShoppingCart.css'
 
 const ShoppingCart = () => {
     const [cart, setCart] = useState([])
-    const [userInfo, setUserInfo] = useState({})
+    // const [userInfo, setUserInfo] = useState({})
 
     let totalPrice = 0
-    cart.map((p) => totalPrice = p.price * p.units + totalPrice)
+    cart.map((p) => totalPrice += p.price * p.quantity)
 
     const { user } = useContext(AuthenticationContext)
 
+    //Pide todos los productos del usuario
     useEffect(() => {
-        fetch(`https://localhost:7044/api/User/GetById${user.id}`, {
+        requesPizzasFromUser()
+    }, [])
+
+    const requesPizzasFromUser = () => {
+        fetch(`https://localhost:7044/api/User/PizzasOfTheUser${user.id}`, {
             method: "GET",
             mode: 'cors',
             headers: {
@@ -24,54 +29,68 @@ const ShoppingCart = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setUserInfo(data)
-                setCart(data.products)
+                // setUserInfo(data)
+                // setCart(data.products)
+                setCart(data)
+                console.log(cart)
+
             })
             .catch((error) => console.log(error))
-    }, [])
+    }
 
-    const deleteCartProduct = async (productId) => {
-        const cartUpdated = cart.filter((p) => p.id !== productId)
-        const userUpdated = {
-            ...userInfo,
-            shopping_cart: cartUpdated
-        }
+
+    const deleteCartProduct = async (productName) => {
+        // const cartUpdated = cart.filter((p) => p.name !== productName)
+        // const userUpdated = {
+        //     ...userInfo,
+        //     shopping_cart: cartUpdated
+        // }
         try {
-            const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
-                method: "PUT",
+            const response = await fetch(`https://localhost:7044/api/User/DeleteOfReservationPizza${user.id}?namePizza=${productName}`, {
+                method: "DELETE",
                 mode: "cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userUpdated)
+                headers: {
+                    'Accept': '*/*',
+                    // 'Content-Type': 'application/json',
+                },
             });
             if (!response.ok) {
                 throw new Error("Error in obtaining products");
             }
             console.log("Product deleted successfully")
-            setCart(cartUpdated)
+            // setCart(cartUpdated)
+            requesPizzasFromUser();
         }
         catch (error) {
             console.error("Error:", error);
         }
+
     }
 
     const handleBuyProducts = async () => {
-        const userUpdated = {
-            ...userInfo,
-            shopping_cart: []
-        }
-        console.log(userUpdated)
+        // const userUpdated = {
+        //     ...userInfo,
+        //     shopping_cart: []
+        // }
+        // console.log(userUpdated)
         try {
-            const userResponse = await fetch(`http://localhost:8000/api/users/${user.id}`, {
-                method: 'PUT',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userUpdated)
-            });
+            const userResponse = await fetch(`https://localhost:7044/api/User/BuyReservationUser${user.id}`,
+                {
+                    method: 'PUT',
+                    mode: 'cors',
+                    // headers: {
+                    //     'Content-Type': 'application/json',
+                    // },
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json',
+                    },
+                    // body: JSON.stringify(userUpdated)
+                });
             if (userResponse.ok) {
                 console.log("User updated successfully");
-                updateProductsData()
+                // updateProductsData()
+                requesPizzasFromUser();
 
                 alert("Compra exitosa");
             } else {
@@ -82,32 +101,35 @@ const ShoppingCart = () => {
         }
     }
 
-    const updateProductsData = async () => {
-        console.log(cart)
+    // const updateProductsData = async () => {
+    //     console.log(cart)
 
-        try {
-            const response = await fetch('http://localhost:8000/purchase', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(cart),
-                mode: "cors"
-            });
+    //     try {
+    //         const response = await fetch('http://localhost:8000/purchase', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(cart),
+    //             mode: "cors"
+    //         });
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Purchase successful:', data);
-                setCart([]);
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             console.log('Purchase successful:', data);
+    //             setCart([]);
 
-            } else {
-                console.error('Purchase failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+    //         } else {
+    //             console.error('Purchase failed');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
 
-    }
+    // }
+
+
+
 
     return (
         <>
@@ -124,11 +146,11 @@ const ShoppingCart = () => {
                                             key={index}
                                             name={product.name}
                                             price={product.price}
-                                            imgUrl={product.imgUrl}
+                                            imgUrl={product.imageUrl}
                                             description={product.description}
                                             id={product.id}
                                             onDeletedProduct={deleteCartProduct}
-                                            units={product.units}>
+                                            units={product.quantity}>
                                         </ShoppingCartItem>
                                     ))}
                                 </Accordion>
@@ -143,10 +165,10 @@ const ShoppingCart = () => {
                     <Alert>No se agregaron productos al carrito</Alert>
                 )}
             </Container>
-            </>
+        </>
 
-            )
+    )
 }
 
 
-            export default ShoppingCart
+export default ShoppingCart
