@@ -11,7 +11,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
 
   const { user } = useContext(AuthenticationContext)
   const [productUnits, setProductUnits] = useState(1)
-  const {isAdmin, isSuperAdmin, isClient} = useValidateUser();
+  const { isAdmin, isSuperAdmin, isClient } = useValidateUser();
   //const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
 
   /* Llamada a la api */
@@ -62,13 +62,14 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
           <Image src={imgUrl} rounded /> <br />
           {description} <br /><hr />
 
-          <Button variant='light' style={{ borderColor: 'black' }} onClick={handleDecreaseUnits}>-</Button>
-          <span style={{ marginRight: '5px', marginLeft: '5px' }}>{productUnits}</span>
-          <Button variant='light' style={{ borderColor: 'black', marginRight: "1.5rem" }} onClick={handleIncreaseUnits}>+</Button>
-
-          {(isSuperAdmin() || isClient()) &&
-            (<Button variant='success' style={{ marginRight: "1.5rem" }} onClick={addToShoppingCart}>Agregar al carrito</Button>)
-          }
+          {(isSuperAdmin() || isClient()) && (
+            <>
+            <Button variant='light' style={{ borderColor: 'black' }} onClick={handleDecreaseUnits}>-</Button>
+            <span style={{ marginRight: '5px', marginLeft: '5px' }}>{productUnits}</span>
+            <Button variant='light' style={{ borderColor: 'black', marginRight: "1.5rem" }} onClick={handleIncreaseUnits}>+</Button>
+            <Button variant='success' style={{ marginRight: "1.5rem" }} onClick={addToShoppingCart}>Agregar al carrito</Button>
+            </>
+          )}
 
           {isAdmin() && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
 
