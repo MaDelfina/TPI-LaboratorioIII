@@ -10,9 +10,9 @@ import useValidateUser from '../hookCustom/useValidateUser';
 const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, onAddedProductToCart }) => {
 
   const { user } = useContext(AuthenticationContext)
+
   const [productUnits, setProductUnits] = useState(1)
   const { isAdmin, isSuperAdmin, isClient } = useValidateUser();
-  //const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
 
   /* Llamada a la api */
   //? Elimina los productos por id
@@ -36,10 +36,14 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
   }
 
   const addToShoppingCart = () => {
+    
+    const IdUser = user.id; //Agrega el ID usuario 
     const units = productUnits
     const product = {
-      id, name, description, price, imgUrl, units
-    };
+        "quantity": units,
+        "productId": id,
+        "userId": IdUser
+      };
 
     onAddedProductToCart(product)
   }
@@ -55,7 +59,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
   }
 
   return (
-    <>
+    <>  
       <Accordion.Item eventKey={id} style={{ backgroundColor: '' }}>
         <Accordion.Header  >{name} - price ${price}</Accordion.Header>
         <Accordion.Body >

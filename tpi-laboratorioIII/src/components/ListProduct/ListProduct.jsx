@@ -99,26 +99,26 @@ const ListProduct = () => {
 
   const HandleAddToShoppingCart = async (product) => {
     try {
-      const productInCartIndex = cart.findIndex((p) => p.id === product.id)
-      let cartUpdated;
+      // const productInCartIndex = cart.findIndex((p) => p.id === product.id)
+      // let cartUpdated;
 
-      if (productInCartIndex >= 0) {
-        cartUpdated = [...cart];
-        cartUpdated[productInCartIndex].units += product.units;
-      } else {
-        cartUpdated = [...cart, product];
-      }
+      // if (productInCartIndex >= 0) {
+      //   cartUpdated = [...cart];
+      //   cartUpdated[productInCartIndex].units += product.units;
+      // } else {
+      //   cartUpdated = [...cart, product];
+      // }
 
-      const userUpdated = {
-        ...userInfo,
-        shopping_cart: cartUpdated,
-      }
+      // const userUpdated = {
+      //   ...userInfo,
+      //   shopping_cart: cartUpdated,
+      // }
 
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
-        method: "PUT",
+      const response = await fetch(`https://localhost:7044/api/User/AddProduct`, {
+        method: "POST",
         mode: "cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userUpdated),
+        body: JSON.stringify(product),
       });
       if (!response.ok) {
         throw new Error("Failed to add new product");
@@ -127,7 +127,7 @@ const ListProduct = () => {
       setUserInfo(data)
       setCart(data.shopping_cart)
       console.log("added products to cart")
-      console.log(userInfo)
+      // console.log(userInfo)
     }
     catch (error) {
       console.error("Error:", error);
