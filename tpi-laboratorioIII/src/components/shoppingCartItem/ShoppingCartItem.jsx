@@ -3,7 +3,7 @@ import { Accordion, Image, Button } from 'react-bootstrap';
 
 const ShoppingCartItem = ({name, imgUrl, price, description, id, onDeletedProduct, units}) => {
     const deleteProductFromCart = () => {
-        onDeletedProduct(id)
+        onDeletedProduct(name)
     }
     return (
         <Accordion.Item eventKey={id}>
