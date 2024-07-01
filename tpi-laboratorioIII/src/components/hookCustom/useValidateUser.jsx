@@ -3,9 +3,9 @@ import { AuthenticationContext } from '../../services/authentication/Authenticat
 
 const useValidateUser = () => {
     const { user } = useContext(AuthenticationContext);
-    const isAdmin = () => user?.role === 'Admin' || user?.role === 'SuperAdmin';
+    const isAdmin = () => user?.role === 'Admin';
     const isSuperAdmin = () => user?.role === "SuperAdmin";
-    const isClient = () => user?.role === "Client" || user?.role === 'SuperAdmin';
+    const isClient = () => user?.role === "Client";
     return {
         isAdmin,
         isSuperAdmin,

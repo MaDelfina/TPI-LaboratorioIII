@@ -18,15 +18,3 @@
     background-color: #a0b9a9;
     /* Color del thumb al pasar el mouse sobre él */
 }
-
-.shop-container {
-    background-color: rgb(221, 189, 189);
-    border: 2px solid #e6b5b5;
-    width: 15rem;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 3px;
-}

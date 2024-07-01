@@ -12,13 +12,8 @@ import useValidateUser  from "../hookCustom/useValidateUser";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthenticationContext)
 
   const {isAdmin, isSuperAdmin, isClient} = useValidateUser();
-
-  // const isAdmin = () => user.role === 'admin' || user.role === 'super-admin';
-  // const isSuperAdmin = () => user.role === "super-admin";
-  // const isClient = () => user.role === "client" || user.role === 'super-admin';
 
   const { handleLogout } = useContext(AuthenticationContext)
 
@@ -48,11 +43,6 @@ const Header = () => {
     navigate('/products');
 
   }
-  const handleLoginNavigation = (event) => {
-    event.preventDefault();
-    navigate('/login');
-
-  }
 
   const handleLogoutButton = () => {
     handleLogout()
@@ -67,7 +57,6 @@ const Header = () => {
           <Navbar.Brand href="" onClick={handleHomeNavigation}>
             <img
               src="https://i.postimg.cc/RFGrYyJd/Horno-Gato-pizza-fotor-bg-remover-20240527212818.png"
-              // src="https://i.postimg.cc/90F2FCHs/gato-Pizza-fotor-bg-remover-20240527212233.png"
               width="60"
               height="50"
               className="d-inline-block align-top"
@@ -83,7 +72,7 @@ const Header = () => {
             <Nav.Link href='' className='nav-link' onClick={handleAdminUserNavigation}>Admin Users</Nav.Link>
           </Nav.Item>)}
 
-          {isAdmin() && (<Nav.Item className='Nav-Seccion'>
+          {(isAdmin() || isSuperAdmin()) && (<Nav.Item className='Nav-Seccion'>
             <Nav.Link href='' className='nav-link' onClick={handleAddProductNavigation}>Add Product</Nav.Link>
           </Nav.Item>)}
 
@@ -94,9 +83,7 @@ const Header = () => {
           <Nav.Item className='Nav-Seccion'>
             <Nav.Link href='' className='nav-link' onClick={handleProductsNavigation}>Products</Nav.Link>
           </Nav.Item>
-          {/* <Nav.Item className='Nav-Seccion'>
-                <Nav.Link href='' className='nav-link' onClick={handleLoginNavigation}>Login</Nav.Link>
-              </Nav.Item> */}
+          
           <Nav.Item className='Nav-Seccion'>
             <Nav.Link href='' className='button-link' onClick={handleLogoutButton}>Cerrar sesión</Nav.Link>
           </Nav.Item>

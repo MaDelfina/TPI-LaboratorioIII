@@ -22,12 +22,12 @@ const AdminUsers = () => {
   }, []);
 
   const handleDeleteUser = async (userId) => {
-    try{
+    try {
       const response = await fetch(`https://localhost:7044/api/User/DeleteId${userId}`, {
         method: 'DELETE',
         mode: 'cors',
       })
-      if (response.ok){
+      if (response.ok) {
         setUsers(users.filter(user => user.id !== userId))
       } else {
         console.log('Error deleting user')
@@ -42,15 +42,13 @@ const AdminUsers = () => {
     setUsers([...users, newAdmin]);
   }
 
-  // min-vh-100 Altura
-  // min-vw-100 ancho
-  return (      
-    <Container className='d-flex justify-content-center min-vh-100 min-vw-100' >
+  return (
+    <Container className='d-flex justify-content-center min-vh-100'>
       <ClientsList usersArray={users} onDeleteUser={handleDeleteUser} />
       <AdminsList usersArray={users} onDeleteUser={handleDeleteUser} />
-      <AddNewAdmin usersArray={users} onAddAdmin={addNewAdminHandler}/>
+      <AddNewAdmin usersArray={users} onAddAdmin={addNewAdminHandler} />
     </Container>
-    
+
   )
 }
 

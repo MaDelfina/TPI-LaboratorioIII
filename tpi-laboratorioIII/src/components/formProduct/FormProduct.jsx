@@ -5,11 +5,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
-import PropTypes from "prop-types";
 import { Container } from 'react-bootstrap';
 
-//Se agrega a una variable globla que contiene toda la lista de productos.
-//no se si iria onProductDataSaved() o va directamente a la varable global. 
 const FormProduct = () => {
     const [enteredName, setEnteredName] = useState("");
     const [enteredDescription, setEnteredDescription] = useState("");

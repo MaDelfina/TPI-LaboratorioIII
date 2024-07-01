@@ -15,8 +15,8 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
   const { isAdmin, isSuperAdmin, isClient } = useValidateUser();
 
   /* Llamada a la api */
-  //? Elimina los productos por id
-  const deleteProducts = async () => {
+  // Elimina los productos por id
+  const deleteProducts = (async () => {
     const productDto = id
     try {
       const response = await fetch(`https://localhost:7044/api/Product/DeleteProdcut${productDto}`, {
@@ -33,7 +33,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
     catch (error) {
       console.error("Error:", error);
     }
-  }
+  })
 
   const addToShoppingCart = () => {
     
@@ -66,7 +66,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
           <Image src={imgUrl} rounded /> <br />
           {description} <br /><hr />
 
-          {(isSuperAdmin() || isClient()) && (
+          {(isClient()) && (
             <>
             <Button variant='light' style={{ borderColor: 'black' }} onClick={handleDecreaseUnits}>-</Button>
             <span style={{ marginRight: '5px', marginLeft: '5px' }}>{productUnits}</span>
@@ -75,7 +75,7 @@ const ProductItem = ({ name, description, price, imgUrl, id, onFetchProducts, on
             </>
           )}
 
-          {isAdmin() && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
+          {(isAdmin() || isSuperAdmin()) && (<Button variant='danger' onClick={deleteProducts}>Delete</Button>)}
 
         </Accordion.Body>
       </Accordion.Item>

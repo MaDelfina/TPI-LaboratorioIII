@@ -1,6 +1,7 @@
 
 import EachClient from '../eachClient/EachClient'
 import { Container, ListGroup } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 const ClientsList = ({usersArray, onDeleteUser}) => {
     const filteredClients = usersArray.filter((user) => user.rol === 'Client')
@@ -15,6 +16,11 @@ const ClientsList = ({usersArray, onDeleteUser}) => {
             </ListGroup>
         </Container>
     )
+}
+
+ClientsList.propType = {
+    usersArray: PropTypes.array,
+    onDeleteUser: PropTypes.func
 }
 
 export default ClientsList

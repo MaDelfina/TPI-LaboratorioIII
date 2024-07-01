@@ -24,7 +24,8 @@ ShoppingCartItem.propType = {
     description: PropTypes.string,
     imgUrl: PropTypes.string,
     price: PropTypes.number,
-    onDeletedProduct: PropTypes.func
+    onDeletedProduct: PropTypes.func,
+    units: PropTypes.number
 }
 
 export default ShoppingCartItem

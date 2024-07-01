@@ -7,7 +7,6 @@ import './ShoppingCart.css'
 
 const ShoppingCart = () => {
     const [cart, setCart] = useState([])
-    // const [userInfo, setUserInfo] = useState({})
 
     let totalPrice = 0
     cart.map((p) => totalPrice += p.price * p.quantity)
@@ -16,10 +15,10 @@ const ShoppingCart = () => {
 
     //Pide todos los productos del usuario
     useEffect(() => {
-        requesPizzasFromUser()
+        requestPizzasFromUser()
     }, [])
 
-    const requesPizzasFromUser = () => {
+    const requestPizzasFromUser = () => {
         fetch(`https://localhost:7044/api/User/PizzasOfTheUser${user.id}`, {
             method: "GET",
             mode: 'cors',
@@ -29,10 +28,8 @@ const ShoppingCart = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                // setUserInfo(data)
-                // setCart(data.products)
                 setCart(data)
-                console.log(cart)
+                console.log('productos del carrito: ' + cart)
 
             })
             .catch((error) => console.log(error))
@@ -40,11 +37,6 @@ const ShoppingCart = () => {
 
 
     const deleteCartProduct = async (productName) => {
-        // const cartUpdated = cart.filter((p) => p.name !== productName)
-        // const userUpdated = {
-        //     ...userInfo,
-        //     shopping_cart: cartUpdated
-        // }
         try {
             const response = await fetch(`https://localhost:7044/api/User/DeleteOfReservationPizza${user.id}?namePizza=${productName}`, {
                 method: "DELETE",
@@ -58,8 +50,7 @@ const ShoppingCart = () => {
                 throw new Error("Error in obtaining products");
             }
             console.log("Product deleted successfully")
-            // setCart(cartUpdated)
-            requesPizzasFromUser();
+            requestPizzasFromUser();
         }
         catch (error) {
             console.error("Error:", error);
@@ -68,29 +59,20 @@ const ShoppingCart = () => {
     }
 
     const handleBuyProducts = async () => {
-        // const userUpdated = {
-        //     ...userInfo,
-        //     shopping_cart: []
-        // }
-        // console.log(userUpdated)
         try {
             const userResponse = await fetch(`https://localhost:7044/api/User/BuyReservationUser${user.id}`,
                 {
                     method: 'PUT',
                     mode: 'cors',
-                    // headers: {
-                    //     'Content-Type': 'application/json',
-                    // },
                     headers: {
                         'Accept': '*/*',
                         'Content-Type': 'application/json',
                     },
-                    // body: JSON.stringify(userUpdated)
                 });
             if (userResponse.ok) {
                 console.log("User updated successfully");
                 // updateProductsData()
-                requesPizzasFromUser();
+                requestPizzasFromUser();
 
                 alert("Compra exitosa");
             } else {
@@ -101,43 +83,13 @@ const ShoppingCart = () => {
         }
     }
 
-    // const updateProductsData = async () => {
-    //     console.log(cart)
-
-    //     try {
-    //         const response = await fetch('http://localhost:8000/purchase', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(cart),
-    //             mode: "cors"
-    //         });
-
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             console.log('Purchase successful:', data);
-    //             setCart([]);
-
-    //         } else {
-    //             console.error('Purchase failed');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //     }
-
-    // }
-
-
-
-
     return (
         <>
-            <Container fluid='md' className='min-vh-100 min-vw-100'>
+            <Container fluid='md' className='min-vh-100 min-vw-100 d-flex flex-column align-items-center mt-4'>
 
                 {cart.length > 0 ? (
-                    <Container fluid='md' className='min-vh-100 min-vw-100'>
-                        <Row>
+                    <Container fluid='md' className='d-flex flex-column justify-content-center'>
+                        <Row className='w-100 d-flex justify-content-center'>
                             <Col md={3}></Col>
                             <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
                                 <Accordion style={{ width: '30rem' }}>
@@ -162,7 +114,7 @@ const ShoppingCart = () => {
                         </Row>
                     </Container>
                 ) : (
-                    <Alert>No se agregaron productos al carrito</Alert>
+                    <Alert style={{width: '600px'}}>No se agregaron productos al carrito</Alert>
                 )}
             </Container>
         </>

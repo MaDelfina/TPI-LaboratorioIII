@@ -1,6 +1,7 @@
 
 import EachAdmin from '../eachAdmin/EachAdmin'
 import { Container, ListGroup } from 'react-bootstrap'
+import PropTypes from 'prop-types';
 
 const AdminsList = ({usersArray, onDeleteUser}) => {
     const filteredAdmins = usersArray.filter((user) => user.rol === 'Admin')
@@ -15,6 +16,11 @@ const AdminsList = ({usersArray, onDeleteUser}) => {
             </ListGroup>
         </Container>
     )
+}
+
+AdminsList.propType = {
+    usersArray: PropTypes.array,
+    onDeleteUser: PropTypes.func
 }
 
 export default AdminsList
