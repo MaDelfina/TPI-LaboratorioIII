@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import './Register.css'
+import { Container } from 'react-bootstrap';
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -88,54 +89,57 @@ function Register() {
 
     return (
         <>
-            <Form onSubmit={buttonRegister} className='register'>
-                <Form.Group className="mb-3">
-                    <Form.Label>Usuario</Form.Label>
-                    <Form.Control type="user" placeholder="Nombre de usuario" value={email} ref={emailRef} onChange={handlerEmail} />
-                </Form.Group>
+            <Container style={{ maxWidth: '600px' }}>
+                <Form onSubmit={buttonRegister} className='register'>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Usuario</Form.Label>
+                        <Form.Control type="user" placeholder="Nombre de usuario" value={email} ref={emailRef} onChange={handlerEmail} />
+                    </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword1">
-                    <Form.Label>Contraseña</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password1} ref={password1Ref} onChange={handlerPassword1} />
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPassword1">
+                        <Form.Label>Contraseña</Form.Label>
+                        <Form.Control type="password" placeholder="Contraseña" value={password1} ref={password1Ref} onChange={handlerPassword1} />
+                    </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword2">
-                    <Form.Label>Confirmar contraseña</Form.Label>
-                    <Form.Control type="password" placeholder="confirmar contraseña" value={password2} ref={password2Ref} onChange={handlerPassword2} />
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPassword2">
+                        <Form.Label>Confirmar contraseña</Form.Label>
+                        <Form.Control type="password" placeholder="Confirmar contraseña" value={password2} ref={password2Ref} onChange={handlerPassword2} />
+                    </Form.Group>
 
-                <Button variant="outline-primary" type="submit">
-                    Registrarme
-                </Button>
-                <hr />
-                <Button variant="outline-primary" type="submit" onClick={loginButtonHandler}>
-                    Iniciar sesion
-                </Button>
+                    <Button variant="outline-primary" type="submit">
+                        Registrarme
+                    </Button>
+                    <hr />
+                    <Button className='mb-3' variant="outline-primary" type="submit" onClick={loginButtonHandler}>
+                        Iniciar sesion
+                    </Button>
 
-                {correctRegister && (
-                    <Alert variant="success" onClose={() => setCorrectRegister(false)} dismissible>
-                        ¡Registro exitoso!
-                    </Alert>
-                )}
+                    {correctRegister && (
+                        <Alert variant="success" onClose={() => setCorrectRegister(false)} dismissible>
+                            ¡Registro exitoso!
+                        </Alert>
+                    )}
 
-                {completeFields && (
-                    <Alert variant="danger" onClose={() => setcompleteFields(false)} dismissible>
-                        ¡Falta completar campos!
-                    </Alert>
-                )}
+                    {completeFields && (
+                        <Alert variant="danger" onClose={() => setcompleteFields(false)} dismissible>
+                            ¡Falta completar campos!
+                        </Alert>
+                    )}
 
-                {differentPassword && (
-                    <Alert variant="danger" onClose={() => setDifferentPassword(false)} dismissible>
-                        ¡Las contraselas no coinciden!
-                    </Alert>
-                )}
+                    {differentPassword && (
+                        <Alert variant="danger" onClose={() => setDifferentPassword(false)} dismissible>
+                            ¡Las contraseñas no coinciden!
+                        </Alert>
+                    )}
 
-                {existingUser && (
-                    <Alert variant='danger' onClose={() => setExistingUser(false)} dismissible>
-                        {errorMessage}
-                    </Alert>
-                )}
-            </Form>
+                    {existingUser && (
+                        <Alert variant='danger' onClose={() => setExistingUser(false)} dismissible>
+                            {errorMessage}
+                        </Alert>
+                    )}
+                </Form>
+            </Container>
+
         </>
     )
 }

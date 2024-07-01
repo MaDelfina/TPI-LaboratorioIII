@@ -1,32 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Accordion, Container, Alert } from 'react-bootstrap';
-import PropTypes from "prop-types";
-
-// import { pizzas } from '../data/Data';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ProductItem from '../productItem/ProductItem';
 import Search from "../search/Search"
 import './listProduct.css';
-import Spiner from '../../spiner/Spiner';
+import Spiner from '../spiner/Spiner'; 
 
 
 const ListProduct = () => {
   const [filterPizzas, setFilterPizzas] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState('ture'); //Spiner
-  useEffect(() => {
+  const [loading, setLoading] = useState(true); //Spiner
+  const [text, setText] = useState('') // para la función search
+
+  /*useEffect(() => {
     if (filterPizzas.length > 0) {
       setFilterPizzas(filterPizzas);
       setLoading(false); //Hay que crear un spiner para que se muestre mientras se cargan las pizzas.
     }
-  }, [filterPizzas]);
-
+  }, [filterPizzas]);*/
 
 
   /* Llama a la api */
 
-  //? Llama a todos los productos que hay en la API y los guarda con setProducts().
+  // Llama a todos los productos que hay en la API y los guarda con setFilterPizzas().
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -52,29 +49,11 @@ const ListProduct = () => {
   /* ---------------- */
 
 
-  // Cuando apreto enter en el boton recarga la pagina 
   const searchHandler = (search) => {
-    if (search.trim() === "") {
-
-      setFilterPizzas(filterPizzas);
-      setError('');
-
-    } else {
-
-      const filterProducts = filterPizzas.filter(
-        (pizza) =>
-          pizza.name.toLowerCase().includes(search.toLowerCase())
-      );
-
-      setFilterPizzas(filterProducts);
-
-      if (filterProducts.length > 0) {
-        setError('');
-      } else {
-        setError('Pizza no encontrada');
-      }
-    }
+    setText(search)
   }
+
+  const pizzasSearched = filterPizzas.filter((pizza) => pizza.name.toLowerCase().includes(text.toLowerCase()))
 
 
   const AddedProductToCart = async (product) => {
@@ -104,34 +83,33 @@ const ListProduct = () => {
         <Spiner />
       </Container>
     ) : (
-      <Container fluid='md' className='min-vh-100 min-vw-100'>
+      <Container fluid='md' className='min-vh-100 min-vw-100 d-flex flex-column align-items-center'>
         <Search onSearch={searchHandler} />
-        <Row>
+        <Row className='w-100 d-flex justify-content-center'>
           <Col md={3}></Col>
 
           <Col md={6} className='Scroll-Bar' style={{ overflow: 'auto', width: '33rem', height: '35rem' }}>
 
-            {error &&
+            {pizzasSearched.length > 0 ? (
+              <Accordion style={{ width: '30rem' }}>
+                {pizzasSearched.map(pizza => (
+                  <ProductItem
+                    key={pizza.id}
+                    name={pizza.name}
+                    description={pizza.description}
+                    price={pizza.price}
+                    imgUrl={pizza.imageUrl}
+                    id={pizza.id}
+                    stock={pizza.stock}
+                    onFetchProducts={fetchProducts}
+                    onAddedProductToCart={AddedProductToCart}
+                  />
+                ))}
+              </Accordion>) : (
               <Alert key="danger" variant="danger">
-                {error}
+                Pizza no encontrada
               </Alert>
-            }
-            <Accordion style={{ width: '30rem' }}>
-              {filterPizzas.map(pizza => (
-                <ProductItem
-                  key={pizza.id}
-                  name={pizza.name}
-                  description={pizza.description}
-                  price={pizza.price}
-                  imgUrl={pizza.imageUrl}
-                  id={pizza.id}
-                  stock={pizza.stock}
-                  onFetchProducts={fetchProducts}
-                  onAddedProductToCart={AddedProductToCart}
-                // addToCart={addToCart}
-                />
-              ))}
-            </Accordion>
+            )}
           </Col>
           <Col md={3}></Col>
         </Row>

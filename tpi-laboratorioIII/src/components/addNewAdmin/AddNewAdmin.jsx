@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './AddNewAdmin.css'
-import { Badge, Button, Container, Form, Alert, Card } from 'react-bootstrap'
+import { Badge, Button, Container, Form, Alert } from 'react-bootstrap'
 
 const AddNewAdmin = ({ usersArray, onAddAdmin }) => {
     const [username, setUsername] = useState("")
@@ -70,9 +70,11 @@ const AddNewAdmin = ({ usersArray, onAddAdmin }) => {
                 body: JSON.stringify(newAdmin),
             });
 
+            const data = await response.json()
+
             if (response.ok) {
-                console.log('Nuevo administrador agregado:', newAdmin);
-                onAddAdmin(newAdmin)
+                console.log('Nuevo administrador agregado:', data);
+                onAddAdmin(data)
             } else {
                 setErrors({ ...errors, exists: true });
                 console.log('Error al agregar un administrador');
@@ -83,7 +85,7 @@ const AddNewAdmin = ({ usersArray, onAddAdmin }) => {
     }
 
     return (
-        <div>
+        <div className='mt-2'> 
             <Button variant='secondary' onClick={showFormHandler} className='mb-2'>
                 {showForm ? 'Hide' : 'Add User'}
             </Button>

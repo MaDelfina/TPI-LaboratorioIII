@@ -72,7 +72,6 @@ const Login = () => {
       }
     } catch (error) {
       console.error('An unexpected error occurred. Please try again.', error);
-      console.log('Invalid username or password');
       setErrors({ ...errors, exists: true })
       setEnteredUser('')
       setEnteredPass('')

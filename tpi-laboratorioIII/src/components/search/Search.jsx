@@ -15,11 +15,11 @@ const Search = ({ onSearch }) => {
     return (
         <>
             <Row className="search">
-                <Col md={6} lg={4}>
+                <Col>
                     <Form>
                         <Form.Group controlId="formBasicSearch">
                             <InputGroup>
-                                <Form.Control
+                                <Form.Control style={{width: '30rem'}}
                                     type="text"
                                     placeholder="Buscar producto"
                                     value={search}
