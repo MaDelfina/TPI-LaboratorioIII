@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from 'react'
 import './Login.css'
-import { Form, Button, Alert, Container } from 'react-bootstrap'
+import { Form, Button, Alert, Container, Badge } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
@@ -87,39 +87,43 @@ const Login = () => {
   }
 
   return (
-    <Container className='login'>
-      <Form className='form-login' onSubmit={loginHandler}>
-        <Form.Group className="mb-3">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            ref={usernameRef}
-            value={enteredUser}
-            type='text'
-            placeholder='Nombre de usuario'
-            onChange={usernameHandler}
-            className={errors.username && "border border-danger"}>
+    <div className='fondo'>
+      <Container className='login'>
+        <h1><Badge bg='success'>¡Pizzería La Mejor!</Badge></h1>
+        <Form className='form-login' onSubmit={loginHandler}>
+          <Form.Group className="mb-3">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              ref={usernameRef}
+              value={enteredUser}
+              type='text'
+              placeholder='Nombre de usuario'
+              onChange={usernameHandler}
+              className={errors.username && "border border-danger"}>
 
-          </Form.Control>
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            ref={passwordRef}
-            value={enteredPass}
-            type='password'
-            placeholder='Contraseña'
-            onChange={passwordHandler}
-            className={errors.password && "border border-danger"}>
+            </Form.Control>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              ref={passwordRef}
+              value={enteredPass}
+              type='password'
+              placeholder='Contraseña'
+              onChange={passwordHandler}
+              className={errors.password && "border border-danger"}>
 
-          </Form.Control>
-        </Form.Group>
-        <Button variant='primary' type='submit'>Login</Button>
-        <p className='mt-3'>¿Todavía no estás registrado?</p>
-        <Button variant='outline-primary' onClick={registerButtonHandler}>Go To Register</Button>
-        {errors.exists && <Alert variant='danger' className='mt-3'>Credenciales inválidas</Alert>}
-        {(errors.username || errors.password) && <Alert variant='warning' className='mt-3'>Debes completar todos los campos</Alert>}
-      </Form>
-    </Container>
+            </Form.Control>
+          </Form.Group>
+          <Button variant='success' type='submit'>Login</Button>
+          <p className='mt-3'>¿Todavía no estás registrado?</p>
+          <Button variant='outline-success' onClick={registerButtonHandler}>Go To Register</Button>
+          {errors.exists && <Alert variant='danger' className='mt-3'>Credenciales inválidas</Alert>}
+          {(errors.username || errors.password) && <Alert variant='warning' className='mt-3'>Debes completar todos los campos</Alert>}
+        </Form>
+      </Container>
+    </div>
+
   )
 }
 
