@@ -8,6 +8,10 @@ const AdminUsers = () => {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
+    fetchUsers()
+  }, []);
+
+  const fetchUsers = () => {
     fetch("https://localhost:7044/api/User/getAll", {
       headers: {
         accept: "application/json",
@@ -19,7 +23,7 @@ const AdminUsers = () => {
         setUsers(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }
 
   const handleDeleteUser = async (userId) => {
     try {
@@ -39,6 +43,7 @@ const AdminUsers = () => {
   }
 
   const addNewAdminHandler = (newAdmin) => {
+    fetchUsers()
     setUsers([...users, newAdmin]);
   }
 
