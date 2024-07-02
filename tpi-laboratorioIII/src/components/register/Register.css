@@ -1,9 +1,36 @@
 .register{
-    border: 1px solid rgb(15, 15, 80);
+    border: 1px solid #bee7cc;
     border-radius: 20px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.fondo {
+    position: relative;
+    height: 100vh;
+    background: url('https://image.slidesdocs.com/responsive-images/background/pizza-pink-food-simple-cake-minimalist-powerpoint-background_7e8f6d176d__960_540.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.fondo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.container-register {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
 }
